@@ -1,0 +1,158 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+    font-family: Assistant;
+    src: url("../fonts/Assistant-Regular.ttf");
+    font-display: swap;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Assistant;
+    src: url("../fonts/Assistant-Bold.ttf");
+    font-display: swap;
+    font-weight: bold;
+}
+*{
+    box-sizing: border-box;
+    font-family: Assistant, sans-serif;
+}
+body{
+    display: flex;
+    font-size: 16px;
+    color: #222;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f9f8f8;
+    font-family: Assistant, sans-serif;
+    /*background-image: url("../svg/bg.svg");*/
+}
+.login{
+    width: calc(100% - 40px);
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 3px 10px #00000016;
+    border-radius: 10px;
+}
+.login__logo{
+    width: 300px;
+    display: block;
+    margin: 0 auto 30px;
+}
+
+
+input[type=text]:disabled {
+    opacity: .5;
+    user-select: none;
+}
+input[type=text]:focus:invalid,
+input[type=email]:focus:invalid,
+input[type=tel]:focus:invalid,
+input[type=password]:focus:invalid{
+    border: 1px solid red;
+}
+input[type=text]:valid,
+input[type=email]:valid,
+input[type=tel]:valid,
+input[type=password]:valid{
+    border: 1px solid #BAC405;
+}
+
+
+
+input{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.btn{
+    background-color: #BAC405;
+    color: white;
+    border: none;
+    max-width: 200px;
+    margin: 30px auto 0;
+    display: block;
+    font-weight: bold;
+}
+.btn:hover{
+    transition: .3s;
+    opacity: .8;
+}
+.title{
+    font-weight: bold;
+    color: #15386F;
+    font-size: 2em;
+}
+p{
+    text-align: center;
+    margin: 15px auto;
+}
+.error{
+    color: red;
+}
+/* ACCESSIBILITY */
+
+.accessibility_btn {
+    height: 44px;
+    width: 44px;
+    border-radius: 25px;
+    position: fixed;
+    background-color: #BAC405;
+    left: 10px;
+    bottom: 8px;
+    z-index: 50;
+    fill: #222;
+    padding: 10px;
+    border: none;
+}
+
+.accessibility_btn:hover {
+    background-color: #15386F;
+    transition: 0.2s;
+    fill: white;
+}
+
+.accessibility_open {
+    width: 44px;
+    position: fixed;
+    left: 10px;
+    bottom: 70px;
+    background-color:#BAC405;
+    box-shadow: 0 3px 10px #00000016;
+    z-index: 500;
+    display: none;
+    border-radius: 22px;
+}
+
+.accessibility_open button {
+    height: 44px;
+    font-size: 16px;
+    width: 44px;
+    padding: 10px;
+    fill: #222;
+    cursor: pointer;
+    border-radius: 22px;
+    border: none;
+    background-color: transparent;
+    transition: 0.2s;
+}
+
+.accessibility_open button:hover {
+    opacity: .6;
+}
+
+.show_accessibility {
+    display: block;
+    text-transform: none;
+    transition: .4s ease-in-out;
+}
+
+/* END ACCESSIBILITY */
+

@@ -1,0 +1,60 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+/* FONTS */
+
+@font-face {
+    font-family: Assistant;
+    src: url("../fonts/Assistant-Regular.ttf");
+    font-display: swap;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Assistant;
+    src: url("../fonts/Assistant-Bold.ttf");
+    font-display: swap;
+    font-weight: bold;
+}
+
+/* END FONTS */
+
+* {
+    box-sizing: border-box;
+    font-family: Assistant, serif;
+    font-size: 16px;
+    text-decoration: none;
+}
+p, a{
+    font-family: Assistant, sans-serif;
+}
+
+
+
+
+@media (min-width: 992px) {
+    .logo {
+        height: 70px;
+        width: 320px;
+        margin-top: 24px;
+        margin-left: 25px
+    }
+
+
+    .navbar {
+        display: block;
+        margin-right: 25px;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+
+    .navbar {
+        display: block;
+        margin-right: 0;
+    }
+}
+
