@@ -78,16 +78,17 @@ include_once 'includes/header.php';
                     <?php $at_work_percentage = getPercentage($all_at_work_reports_count, $all_reports_count) ?>
                     <?php $draft_percentage = getPercentage($all_draft_reports_count, $all_reports_count) ?>
                     <label for="project_<?=$project['project_id']?>">
-                            <span>טיוטא: <?=$all_draft_reports_count?></span>/
-                            <span>בטיפול: <?=$all_at_work_reports_count?></span>/
-                            <span>מוכן: <?=$all_finish_reports_count?></span>
+                        <div class="order_status"><?=$draft_percentage . $at_work_percentage . $finish_percentage?></div>
+                        <?= $all_finish_reports_count != 0 ? '<span>מוכן: ' . $all_finish_reports_count . '</span>' : '' ?>
+                        <?= $all_at_work_reports_count != 0 ? '<span>בטיפול: ' . $all_at_work_reports_count . '</span>' : '' ?>
+                        <?= $all_draft_reports_count != 0 ? '<span>טיוטא: ' . $all_draft_reports_count . '</span>' : '' ?>
+                        <?= $all_finish_reports_count == 0 && $all_at_work_reports_count == 0 && $all_draft_reports_count ==0 ? '<span class="td_empty">אין נתונים</span>' : '' ?>
                     </label>
                     <div class="progress">
-                        <div class="progress_line" style="width: <?=$draft_percentage?>; background-color: #CCCCCC"></div>
-                        <div class="progress_line" style="width: <?=$at_work_percentage?>; background-color: #E85353"></div>
                         <div class="progress_line" style="width: <?=$finish_percentage?>; background-color: #13B74F"></div>
+                        <div class="progress_line" style="width: <?=$at_work_percentage?>; background-color: #6fc18d"></div>
+                        <div class="progress_line" style="width: <?=$draft_percentage?>; background-color: #CCCCCC"></div>
                     </div>
-<!--                    <progress id="project_--><?//=$project['project_id']?><!--" value="--><?//=$all_finish_reports_count?><!--" max="--><?//=$all_reports_count?><!--"></progress>-->
                 </td>
                 <td><?= $project['st_project_address'] ?></td>
                 <?php if($user_type != 2) : ?>

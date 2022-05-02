@@ -115,7 +115,10 @@ body {
     display: flex;
     width: 160px;
     /*justify-content: space-between;*/
-    justify-content: space-between;
+    justify-content: center;
+}
+.td_progress label span{
+    margin: 0 5px;
 }
 
 .td_progress span {
@@ -421,8 +424,10 @@ footer {
     justify-content: center;
     flex-direction: column;
 }
-
-footer a {
+footer a:first-child{
+    margin-bottom: 6px;
+}
+footer a{
     color: white;
     text-align: center;
     width: 100%;
@@ -792,11 +797,34 @@ input.btn, button.btn {
 .td_link {
     cursor: pointer;
 }
-
+.td_info{
+    font-weight: bold;
+}
+.td_info svg{
+    fill: red;
+    height: 16px;
+    vertical-align: sub;
+}
 .td_empty {
     opacity: .2;
 }
-
+.td_error{
+    position: absolute;
+    background-color: white;
+    border: 1px solid red;
+    padding: 0px 10px;
+    box-shadow: 0 3px 10px #00000016;
+    border-radius: 10px 0 10px 10px;
+    z-index: 2;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: red;
+    top: 28px;
+    right: 28px;
+}
+td{
+    position: relative;
+}
 td a {
     color: #BAC405;
     transition: .3s;

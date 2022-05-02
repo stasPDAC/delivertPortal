@@ -1,14 +1,14 @@
-<?php require_once '../../../private/app/includes/config.php'; ?>
 <?php
-
+require_once 'includes/config.php';
+include_once 'includes/global.php';
+$page = 'projects';
 //autoload
-require_once "/home/oferv2/web/ofer-il4.pdactech.com/private/vendor/autoload.php";
+require_once "/home/delivery/.composer/vendor/autoload.php";
+//session_start();
 
 //Excel sheet importer
-require_once '/home/oferv2/web/ofer-il4.pdactech.com/private/app/controllers/SheetImporter.php';
-require_once '/home/oferv2/web/ofer-il4.pdactech.com/private/app/controllers/Scheme.php';
-require_once '/home/oferv2/web/ofer-il4.pdactech.com/private/app/controllers/ParsedRow.php';
-const UPLOAD_DIR = "/home/oferv2/web/ofer-il4.pdactech.com/public_html/uploads/sheet_imports";
+
+const UPLOAD_DIR = "/home/delivery/web/deliveryportal.pdactech.com/private/uploads/sheet_imports";
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -25,47 +25,9 @@ if(!in_array($targetEntity, ALLOWED_ENTITIES)){
 }
 
 
-//Todo: get group id and site id from user
-$targetGroupId = filter_input(INPUT_GET, "group_id");
-$targetSiteId = filter_input(INPUT_GET, "site_id");
-
-$sController = new SiteController;
-$uController = new UserController;
-$hController = new HierarchyController;
-
-$accessRequest = [
-    'site_id' => $targetSiteId,
-];
-
-$user = $uController->validateUser($accessRequest);
-
-/* Forbid access if provided siteId not exists in user's sites */
-if($user->super != 1 && !in_array($targetSiteId, $user->sites)){
-    redirect('sites.php');
-}
-
-if ($targetEntity == "site"){
-    if($user->super != 1){
-        redirect('sites.php');
-    }
-}
-else{
-    if($user->super != 1 && $user->permissions['bool_manage_group_entities'] != 1){
-        redirect('sites.php');
-    }
-}
-
-/* Build global values */
-$siteData = $sController->models->site->getSiteById($targetSiteId);
-$typesDic = buildTypeDictionary($siteData['i_site_type']);
-$displayTitle = 'תצוגת '.$typesDic['userTypes'];
-$headTitle = $siteData['st_site_name'] . ' - ' . HEAD_TITLE;
-$lotSpace = Utils::getLotSpace($targetSiteId);
-$viewType = $siteData['i_view_type'];
+$projectId = filter_input(INPUT_GET, "project_id");
 
 
-$serverData = $hController->getGroupEditorData($targetSiteId, $targetGroupId);
-$group = $serverData->groupData;
 
 $pageMode = "new";
 
@@ -98,36 +60,26 @@ switch ($action){
                 }
             }
 
-
-            $_SESSION['EXCEL_PARSER']['GROUP_ID'] = $targetGroupId;
-            $_SESSION['EXCEL_PARSER']['SITE_ID'] = $targetSiteId;
+            $_SESSION['EXCEL_PARSER']['PROJECT_ID'] = $projectId;
             $_SESSION['EXCEL_PARSER']['CURRENT_FILE'] = $res->file;
-            $_SESSION['EXCEL_PARSER']['TARGET_ENTITY'] = $targetEntity;
-            $_SESSION['EXCEL_PARSER']['DO_SPLIT'] = $split;
-            $_SESSION['EXCEL_PARSER']['ALLOWED_CAM_LIST'] = $allowedList;
         }
         break;
     case "apply":
         $res = handleApply();
         if($res){
             $pageMode = "done";
-            if($targetEntity == "group"){
-                redirect("group_info.php?site_id=$targetSiteId&group_id=$targetGroupId");
-            }
-            else{
-                //groups_struct.php?site_id=8
-                redirect("groups_struct.php?site_id=$targetSiteId");
-            }
+            echo "Redirect me to success message";
             exit;
         }
         else{
-            echo "error";
+            echo "error message";
             exit;
         }
         break;
     default:
         unset($_SESSION['EXCEL_PARSER']);
-        redirect("excel_importer.php?site_id=$targetSiteId&group_id=$targetGroupId");
+        echo "Redirect me to error message";
+        exit;
         break;
 }
 
@@ -173,10 +125,7 @@ function handleFileUpload(){
 
 function handleReview(){
     $inputFileName = UPLOAD_DIR . '/' . $_SESSION['EXCEL_PARSER']['CURRENT_FILE'];
-    $targetGroupId = $_SESSION['EXCEL_PARSER']['GROUP_ID'];
-    $targetSiteId = $_SESSION['EXCEL_PARSER']['SITE_ID'];
-    $targetEntity = $_SESSION['EXCEL_PARSER']['TARGET_ENTITY'];
-    $split = $_SESSION['EXCEL_PARSER']['DO_SPLIT'];
+    $projectId = $_SESSION['EXCEL_PARSER']['PROJECT_ID'];
 
     $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($inputFileName);
     $reader->setReadDataOnly(true);
@@ -189,19 +138,15 @@ function handleReview(){
     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, false, false);
 
     //todo: gobal scheme building
-    if($targetEntity == "group"){
-        $scheme = new \OferExcelParser\Scheme(\OferExcelParser\Scheme::SCHEME_TYPE_EXISTING_GROUP);
-    }
-    elseif ($targetEntity == "site"){
-        $scheme = new \OferExcelParser\Scheme(\OferExcelParser\Scheme::SCHEME_TYPE_EXISTING_SITE);
-    }
+    $scheme = new \App\Scheme(\App\Scheme::SCHEME_TYPE_DEFAULT);
+
 
     //Todo: set table headers from backend instead of user inuput.
     //$tableHeaders = $sheetData[0];
     $tableHeaders = array_column($scheme->getScheme(), "header");
 
 
-    $parser = new \OferExcelParser\SheetImporter($scheme, $targetGroupId, $targetSiteId, $split);
+    $parser = new \App\SheetImporter($scheme, $projectId);
     $parsed = $parser->parse($sheetData);
     return ["PARSER"=> $parser, "PARSED" => $parsed, "TABLE_HEADERS" => $tableHeaders];
 }
@@ -212,11 +157,7 @@ function handleApply(){
     }
 
     $inputFileName = UPLOAD_DIR . '/' . $_SESSION['EXCEL_PARSER']['CURRENT_FILE'];
-    $targetGroupId = $_SESSION['EXCEL_PARSER']['GROUP_ID'];
-    $targetSiteId = $_SESSION['EXCEL_PARSER']['SITE_ID'];
-    $targetEntity = $_SESSION['EXCEL_PARSER']['TARGET_ENTITY'];
-    $split = $_SESSION['EXCEL_PARSER']['DO_SPLIT'];
-    $allowedCamList = $_SESSION['EXCEL_PARSER']['ALLOWED_CAM_LIST'];
+    $projectId = $_SESSION['EXCEL_PARSER']['PROJECT_ID'];
 
     //TODO: check clients permission to this site & group ids
 
@@ -229,27 +170,14 @@ function handleApply(){
     //$spreadsheet = IOFactory::load($inputFileName);
     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, false, false);
 
-    if($targetEntity == "group"){
-        $scheme = new \OferExcelParser\Scheme(\OferExcelParser\Scheme::SCHEME_TYPE_EXISTING_GROUP);
-    }
-    elseif ($targetEntity == "site"){
-        $scheme = new \OferExcelParser\Scheme(\OferExcelParser\Scheme::SCHEME_TYPE_EXISTING_SITE);
-    }
+    $scheme = new \App\Scheme(\App\Scheme::SCHEME_TYPE_DEFAULT);
 
-    $parser = new \OferExcelParser\SheetImporter($scheme, $targetGroupId, $targetSiteId, $split);
+    $parser = new \App\SheetImporter($scheme, $projectId);
     $parsed = $parser->parse($sheetData);
 
 
     try{
-        switch($targetEntity){
-            default:
-            case "group":
-                $parser->insertToGroup();
-                break;
-            case "site":
-                $parser->insertToSite($allowedCamList);
-                break;
-        }
+        $parser->insertToProject();
     }
     Catch(Exception $e){
         echo $e;
@@ -272,7 +200,7 @@ function buildRow($row_tag, $arr){
 }
 
 /* Element builders */
-function buildRowParsed($row_tag, \OferExcelParser\ParsedRow $parsedRow){
+function buildRowParsed($row_tag, \App\ParsedRow $parsedRow){
     $html = "<tr>\n";
     global $icons;
     $data = $parsedRow->raw;
@@ -288,18 +216,18 @@ function buildRowParsed($row_tag, \OferExcelParser\ParsedRow $parsedRow){
             $d = $dataParsed[$ii];
         }
 
-        if($status_idx === \OferExcelParser\ParsedRow::VALID_STATUS){
+        if($status_idx === \App\ParsedRow::VALID_STATUS){
             $html .= "<$row_tag>" . htmlentities($d) . "</$row_tag>";
         }
         else{
             $html .= '<' . $row_tag . '>' .
-                     '   <span><a title="' . $status . '">' . $icons['info'] . '</a>' . htmlentities($d) . '</span>' .
-                     '   <p class="tdError">' . $status .'</p>' .
+                     '   <span class="td_info"><a title="' . $status . '">' . $icons['info'] . '</a>' . htmlentities($d) . '</span>' .
+                     '   <p class="td_error">' . $status .'</p>' .
                      '</'. $row_tag . '>' . "\n";
         }
 
-//        $cellClass = $status_idx === \OferExcelParser\ParsedRow::VALID_STATUS ? "valid" : "invalid-text";
-//        $invalidIcon = $status_idx === \OferExcelParser\ParsedRow::VALID_STATUS ? "" : getInvalidIcon($status);
+//        $cellClass = $status_idx === \App\ParsedRow::VALID_STATUS ? "valid" : "invalid-text";
+//        $invalidIcon = $status_idx === \App\ParsedRow::VALID_STATUS ? "" : getInvalidIcon($status);
 //
 //        $html .= "<$row_tag><div class='cell $cellClass'>" . htmlentities($d) . "<br>" . $invalidIcon . "</div></$row_tag>";
         $idx++;
@@ -334,105 +262,84 @@ elseif($pageMode == "done"){
     echo "done. ";
     exit;
 }
-
-
-$pageSettings = [
-    'self' => basename($_SERVER['PHP_SELF']),
-    'excel_review' => 'excel_review.php',
-    'excel_importer' => 'excel_importer.php'
-];
-
-$split = filter_input(INPUT_POST, "bool_split");
+include_once 'includes/head.php';
+include_once 'includes/header.php';
 ?>
+<div class="main_container">
+    <div class="main_container__header">
+        <div class="main_container__title">הוספת דיירים באקסל</div>
+            <div class="flex">
+                <a title="עריכת פרויקט" class="btn outline_btn" href="excelEditor.php?id=<?=$projectId?>">חזרה</a>
+                <!--                <a title="הוספת דייר חדש" class="btn" href="clientEditor.php?id=">הוספת דייר חדש</a>-->
+            </div>
+    </div>
+    <div class="container__box">
+        <?php if(!$isValid && $parsed > 0): ?>
+            <p>התגלו נתונים לא תקינים בקובץ אקסל שהועלה. אנא תקנו והעלו את הקובץ מחדש.</p>
+        <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_BAD_HEADER']): ?>
+            <p>כותרות הקובץ לא תואמות לכותרות המצופות ע"י המערכת. אנא השתמשו בקובץ לדוגמא.</p>
+        <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_EMPTY']): ?>
+            <p>לא נמצא מידע תקין הניתן לייבא למערכת</p>
+        <?php endif; ?>
 
-
-
-<?php $page = 'parkingCounter'; ?>
-<?php global $icons ?>
-<?php include '../templates/head.php'; ?>
-<?php include '../templates/header.php'; ?>
-    <div class="container">
-        <div class="container_header">
-            <div class="container_title">סקירה לפני יבוא</div>
-            <div class="container_btns">
-                <div class="mobile_btn_more">
-                    <button class="btn more_options_btn"><?= $icons['more'] ?></button>
-                    <div class="open_options">
-                        <?php if($isValid) : ?>
-                        <form id="excel-apply-form" method="post" enctype="multipart/form-data" action="<?=$pageSettings['excel_review']?>?site_id=<?= $targetSiteId ?>&group_id=<?= $targetGroupId ?>&te=<?= $targetEntity ?>">
-                            <input name="action" value="apply" type="hidden">
-                        </form>
-                        <button id="excel-apply-btn" class="btn"><?= $icons['save'] ?>ייבא</button>
-                        <?php else: ?>
-                            <button class="btn vertical-align uploadExcel">
-                                <div class="file-upload">
-                                    <div class="file-select">
-                                        <div id="noFile" class="file-select-name"><?= $icons['list'] ?>העלאת קובץ</div>
-                                        <form id="excel-import-form" method="post" enctype="multipart/form-data" action="<?=$pageSettings['excel_review']?>?site_id=<?= $targetSiteId ?>&group_id=<?= $targetGroupId ?>&te=<?= $targetEntity ?>">
-                                            <input name="action" value="upload" type="hidden">
-                                            <?php if(isset($split) && $split): ?>
-                                            <input name="bool_split" type="hidden" value="on">
-                                            <?php endif; ?>
-                                            <input onchange="$('#excel-import-form').submit();" id="excel-file-input" name="spreadsheet" type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-                                        </form>
-                                    </div>
-                                </div>
-                            </button>
-                            <?php if($targetEntity == "site" && $split): ?>
-                                    <input id="bool_split" name="bool_split" type="hidden" value="1" autocomplete="off">
-                            <?php endif;?>
-                        <?php endif; ?>
-                        <button onclick="location.href='excel_importer.php?site_id=<?=$targetSiteId?>&group_id=<?=$targetGroupId?>&te=<?= $targetEntity ?>'" class="btn"><?= $icons['back'] ?>חזרה</button>
+        <?php if(!$isValid && $parsed > 0 || !$parsed): ?>
+            <form id="excel_upload_form" method="post" action="excel_review.php?project_id=<?=$projectId?>" enctype="multipart/form-data">
+                <div class="file-upload">
+                    <div class="file-select">
+                        <input type="hidden" name="action" value="upload">
+                        <div id="noFile" class="file-select-name">העלאת קובץ</div>
+                        <input accept="application/vnd.ms-excel" onchange="$('#excel_upload_form').submit()" id="chooseNewFile" type="file" name="spreadsheet">
                     </div>
                 </div>
-            </div>
-        </div>
-        <?php if($targetEntity == "group"): ?>
-            <p class="container_title" style="font-size: 1em;"><?= $typesDic['groupTypeAlt'] ?> מייבאת: <?= $group['st_group_name'] ?></p>
-        <?php else: ?>
-            <p class="container_title" style="font-size: 1em;">חניון מייבא: <?= $siteData['st_site_name'] ?></p>
-        <?php endif;?>
-
-        <?php if(!$isValid && $parsed > 0): ?>
-        <p class="description error">התגלו נתונים לא תקינים בקובץ אקסל שהועלה. אנא תקנו והעלו את הקובץ מחדש.</p>
-        <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_BAD_HEADER']): ?>
-        <p class="description error">כותרות הקובץ לא תואמות לכותרות המצופות ע"י המערכת. אנא השתמשו בקובץ לדוגמא.</p>
-        <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_EMPTY']): ?>
-            <p class="description error">לא נמצא מידע תקין הניתן לייבא למערכת</p>
-        <?php endif; ?>
-        <?php if($parsed && count($parsed) > 0): ?>
-        <div class="container_content">
-            <div class="table_responsive" style="overflow-x: auto">
-            <table>
-                <thead>
-                <?= buildRow("th", $tableHeaders)?>
-                </thead>
-                <tbody>
-                <?php
-                    //Sort parsed rows by having invalid rows first.
-                    function cmpParsedRow(\OferExcelParser\ParsedRow $row_1, \OferExcelParser\ParsedRow $row_2){
-                        if($row_1->isValidRow() && $row_2->isValidRow()){
-                            return 0;
-                        }
-                        return $row_1->isValidRow() < $row_2->isValidRow() ? - 1 : 1;
-                    }
-
-                    usort($parsed, "cmpParsedRow");
-
-                    for($ii = 0; $ii < count($parsed); $ii++){
-                        $p = $parsed[$ii];
-                        echo buildRowParsed("td", $p);
-                    }
-                ?>
-                </tbody>
-            </table>
-            </div>
-        </div>
+            </form>
         <?php endif; ?>
     </div>
+
+    <?php if($parsed && count($parsed) > 0): ?>
+
+
+    <div class="line"></div>
+    <table id="projects_table" class="table table-striped">
+        <thead>
+        <tr>
+            <?= buildRow("th", $tableHeaders)?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        //Sort parsed rows by having invalid rows first.
+        function cmpParsedRow(\App\ParsedRow $row_1, \App\ParsedRow $row_2){
+            if($row_1->isValidRow() && $row_2->isValidRow()){
+                return 0;
+            }
+            return $row_1->isValidRow() < $row_2->isValidRow() ? - 1 : 1;
+        }
+
+        usort($parsed, "cmpParsedRow");
+
+        for($ii = 0; $ii < count($parsed); $ii++){
+            $p = $parsed[$ii];
+            echo buildRowParsed("td", $p);
+        }
+        ?>
+        </tbody>
+    </table>
+
+    <?php endif; ?>
+
+
+</div>
+
+
+
+
+
+
+
 <script>
     $("#excel-apply-btn").on("click", function(){
         $("#excel-apply-form").submit();
     });
 </script>
-<?php include '../templates/footer.php'; ?>
+<script src="js/excelEditor.js"></script>
+<?php include_once 'includes/footer.php'; ?>

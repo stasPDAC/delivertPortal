@@ -1,9 +1,5 @@
 $(document).ready(function () {
     $('#projects_table').DataTable({
-        columnDefs: [
-            {orderable: false, targets: [9]}
-        ],
-        order: [[8, 'desc']],
         pageLength: 50,
         language: {
             search: "",
@@ -29,4 +25,6 @@ $(document).ready(function () {
             box.style.display = 'none';
         }
     }, 2000);
+
+
 })
