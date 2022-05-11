@@ -4,43 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="upload excel clients">
-      <change afterPath="$PROJECT_DIR$/images/logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/js/note.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pdf_clientReport.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pdf_exportReport.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pdf_faultReport.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clacc/ParsedRow.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clacc/Scheme.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clacc/SheetImporter.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/clientEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/clientEditor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contractorEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/contractorEditor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/datatables.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/datatables.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/login_style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examiner.php" beforeDir="false" afterPath="$PROJECT_DIR$/examiner.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/excelEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/excelEditor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/excel_review.php" beforeDir="false" afterPath="$PROJECT_DIR$/excel_review.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fault.php" beforeDir="false" afterPath="$PROJECT_DIR$/fault.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/icons.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/icons.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inspectorEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/inspectorEditor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/notes.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/notes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/report.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/managerEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/managerEditor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/note.php" beforeDir="false" afterPath="$PROJECT_DIR$/note.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/noteView.php" beforeDir="false" afterPath="$PROJECT_DIR$/noteView.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notes.php" beforeDir="false" afterPath="$PROJECT_DIR$/notes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.php" beforeDir="false" afterPath="$PROJECT_DIR$/project.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects.php" beforeDir="false" afterPath="$PROJECT_DIR$/projects.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/report.php" beforeDir="false" afterPath="$PROJECT_DIR$/report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reports.php" beforeDir="false" afterPath="$PROJECT_DIR$/reports.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terms.php" beforeDir="false" afterPath="$PROJECT_DIR$/terms.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/userEditor.php" afterDir="false" />
-    </list>
+    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="upload excel clients" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,7 +139,7 @@
       <workItem from="1651999200656" duration="13187000" />
       <workItem from="1652084227308" duration="21554000" />
       <workItem from="1652171856493" duration="1171000" />
-      <workItem from="1652250437648" duration="7541000" />
+      <workItem from="1652250437648" duration="7931000" />
     </task>
     <task id="LOCAL-00001" summary="Accessibility corrections from the report">
       <created>1640179381701</created>
