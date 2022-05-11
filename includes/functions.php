@@ -125,6 +125,20 @@ function getAllContractorByProjectId($project_id)
     return $response;
 }
 
+function getAllProjectsByContractorIdForProjectsPage($contractor_id){
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT *, tb_projects.id AS project_id, tb_projects.i_active AS project_activity FROM tb_projects 
+        LEFT JOIN tb_users ON tb_users.id = tb_projects.i_project_manager 
+        LEFT JOIN tb_projects_conn ON tb_projects_conn.i_project_id = tb_projects.id
+        WHERE tb_projects.i_active = 1 AND tb_projects_conn.i_contractor_id = :i_contractor_id 
+        GROUP BY tb_projects.st_project_name');
+    $stmt->bindParam(':i_contractor_id', $contractor_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
 function getAllProjectsByContractorId($contractor_id)
 {
     global $pdo;
@@ -531,6 +545,24 @@ WHERE tb_fault_remarks.i_fault_id = :i_fault_id');
     return $response;
 }
 
+function getAllFinishNotesByFaultId($fault_id)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT tb_fault_remarks.*, tb_fault_status.st_fault_status_name, tb_fault_status2.st_fault_status_name AS st_last_fault_status_name, tb_fault_status.st_color_status, tb_users_types.user_type, tb_users.st_user_name
+FROM tb_fault_remarks 
+LEFT JOIN tb_fault_status ON tb_fault_remarks.i_status = tb_fault_status.id
+LEFT JOIN tb_fault_status AS tb_fault_status2 ON tb_fault_remarks.i_last_status= tb_fault_status2.id
+LEFT JOIN tb_users_types ON tb_fault_remarks.i_user_type= tb_users_types.id
+LEFT JOIN tb_users ON tb_fault_remarks.i_user_id = tb_users.id 
+WHERE tb_fault_remarks.i_fault_id = :i_fault_id AND st_note_client != "" ');
+    $stmt->bindParam(':i_fault_id', $fault_id);
+    $stmt->execute();
+    $response = $stmt->fetch();
+    $stmt = null;
+
+    return $response;
+}
+
 function getReportBySerialId($serial_number_id)
 {
     global $pdo;
@@ -608,6 +640,31 @@ LEFT JOIN tb_fault_status ON tb_fault.i_fault_status = tb_fault_status.id
 LEFT JOIN tb_reports ON tb_reports.i_serial_number = tb_fault.i_serial_number
 LEFT JOIN tb_projects ON tb_reports.i_project_id = tb_projects.id
 LEFT JOIN tb_contractors_types ON tb_fault.i_category= tb_contractors_types.id WHERE tb_fault.i_fault_status > 1');
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function getAllReportsFaultsByContractorsIdAndProjectId($сontractors_id, $project_id)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT tb_fault.id, tb_fault.i_serial_number, tb_fault.st_title, tb_users.st_user_name, tb_fault.st_fault_content, tb_fault_status.st_fault_status_name, tb_fault_status.st_color_status, tb_projects.st_project_name, tb_contractors_types .st_contractor_type, tb_fault_status.id AS status_id, tb_projects_conn.i_contractor_id, 
+        tb_contractors_types.id AS type_id
+        FROM tb_fault 
+        LEFT JOIN tb_fault_status ON tb_fault.i_fault_status = tb_fault_status.id
+        LEFT JOIN tb_reports ON tb_reports.i_serial_number = tb_fault.i_serial_number
+        LEFT JOIN tb_projects ON tb_reports.i_project_id = tb_projects.id
+        LEFT JOIN tb_contractors_types ON tb_fault.i_category = tb_contractors_types.id
+        LEFT JOIN tb_projects_conn ON tb_projects_conn.i_project_id = tb_projects.id
+            LEFT JOIN tb_users ON tb_users.id = tb_projects_conn.i_contractor_id
+        INNER JOIN tb_contractors_conn ON tb_contractors_conn.i_contractor_id = :i_contractor_id AND tb_contractors_types.id = tb_contractors_conn.i_contractor_type
+        WHERE tb_projects_conn.i_contractor_id = :i_contractor_id2 AND tb_fault_status.id = 2 AND tb_projects.id = :tb_projects_id
+        GROUP BY tb_fault.id ORDER BY tb_contractors_types.id');
+    $stmt->bindParam(':i_contractor_id', $сontractors_id);
+    $stmt->bindParam(':i_contractor_id2', $сontractors_id);
+    $stmt->bindParam(':tb_projects_id', $project_id);
     $stmt->execute();
     $response = $stmt->fetchAll();
     $stmt = null;
@@ -764,6 +821,63 @@ function createNewClient($project_id, $user_name, $phone_first, $phone_second, $
     }
 }
 
+function createNewClients($project_id, $user_name, $phone_first, $phone_second, $mail, $property_type, $property_number, $floor, $apartment, $type, $kitchen_name, $kitchen_number, $bathroom_name, $bathroom_number)
+{
+    global $pdo;
+    global $user_id;
+    $serial_number = getLastSerialNumber();
+    $sql = "INSERT INTO tb_users (
+                i_project_id,
+                i_serial_number,
+                st_user_name,
+                st_phone_first,
+                st_phone_second,
+                st_mail,
+                st_property_type,
+                st_property_number,
+                st_floor,
+                st_apartment,
+                i_type,
+                i_created_by_user,
+                date_created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+    $params = [$project_id,
+        $serial_number,
+        $user_name,
+        $phone_first,
+        $phone_second,
+        $mail,
+        $property_type,
+        $property_number,
+        $floor,
+        $apartment,
+        $type,
+        $user_id];
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    if ($stmt->rowCount() > 0) {
+        $sql = "INSERT INTO tb_reports (
+                i_serial_number,
+                i_project_id,
+                st_kitchen_name,
+                st_kitchen_number,
+                st_bathroom_name,
+                st_bathroom_number,
+                i_created_by_user,
+                date_created) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+        $params = [$serial_number,
+            $project_id,
+            $kitchen_name,
+            $kitchen_number,
+            $bathroom_name,
+            $bathroom_number,
+            $user_id];
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+    }
+}
+
 function createNewAdmin($user_name, $phone_first, $mail, $type)
 {
     global $pdo;
@@ -907,7 +1021,7 @@ function createNewFault($body_text, $category, $title, $report_serial)
     }
 }
 
-function createNewNote($status, $report_serial, $fault_id, $note, $last_status)
+function createNewNote($status, $report_serial, $fault_id, $note, $last_status, $client_note)
 {
     global $pdo;
     global $user_id;
@@ -916,14 +1030,16 @@ function createNewNote($status, $report_serial, $fault_id, $note, $last_status)
     $sql = "INSERT INTO tb_fault_remarks (
               i_fault_id, 
               st_note, 
+              st_note_client, 
               i_status, 
               i_last_status, 
               i_user_id, 
               i_user_type, 
-              st_note_date) VALUES ( ?, ?, ?, ?, ?, ?, NOW())";
+              st_note_date) VALUES ( ?, ?, ?, ?, ?, ?, ?, NOW())";
     $params = [
         $fault_id,
         $note,
+        $client_note,
         $status,
         $last_status,
         $user_id,
@@ -958,6 +1074,26 @@ function createNewNote($status, $report_serial, $fault_id, $note, $last_status)
 
 
 /////////////////////////////////// UPDATE ///////////////////////////////////
+
+function setRememberTokenToUser($remember_token, $user_id)
+{
+    global $pdo;
+    try {
+        $stmt = $pdo->prepare('UPDATE tb_users SET
+        st_remember_token = :st_remember_token
+        WHERE id = :id'
+        );
+
+        $stmt->bindParam(':st_remember_token', $remember_token);
+
+        $stmt->bindParam(':id', $user_id);
+        $stmt->execute();
+        $stmt = null;
+
+    } catch (Exception $e) {
+
+    }
+}
 
 function updateClientById($user_name, $project_id, $client_id, $phone_first, $phone_second, $mail, $property_type, $property_number, $floor, $apartment, $active, $kitchen_name, $kitchen_number, $bathroom_name, $bathroom_number)
 {
@@ -1296,6 +1432,21 @@ function updateReportBySerialNumber($report_serial, $status)
     } catch (Exception $e) {
         header('Location: report.php?id=' . $report_serial . '&msg=error');
         exit;
+    }
+}
+
+function uploudPdfFile($pdf_name_file, $report_serial)
+{
+    global $pdo;
+    try {
+        $stmt = $pdo->prepare('UPDATE tb_reports SET st_pdf_file = :st_pdf_file WHERE i_serial_number = :i_serial_number');
+        $stmt->bindParam(':st_pdf_file', $pdf_name_file);
+        $stmt->bindParam(':i_serial_number', $report_serial);
+        $stmt->execute();
+        $stmt = null;
+
+    } catch (Exception $e) {
+
     }
 }
 

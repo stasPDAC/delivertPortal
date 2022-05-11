@@ -2,7 +2,6 @@
 require_once 'includes/config.php';
 include_once 'includes/global.php';
 
-$report_serial = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 //autoload
 require_once "/home/delivery/.composer/vendor/autoload.php";
 
@@ -51,42 +50,58 @@ $pdf->setRTL(true);
 // add a page
 $pdf->AddPage();
 global $user_name_connect;
-$phone_checker = getPhoneCheckerBySerialId($report_serial);
-$client = getClientBySerialId($report_serial);
-$faults = getAllFaultsBySerialId($report_serial);
+
+
+$project_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
+$user_id = filter_input(INPUT_GET, 'u', FILTER_SANITIZE_SPECIAL_CHARS);
+
+$faults = getAllReportsFaultsByContractorsIdAndProjectId($user_id, $project_id);
+$project = getProjectByProjectId($project_id);
+$contactor_name = 'דו"ח ריק';
+if(isset($faults['0']['st_user_name'])){
+    $contactor_name = 'דו"ח ליקויים לקבלן - ' . $faults['0']['st_user_name'];
+}
+
 $current_category = 0;
 $count = 1;
-$project = getProjectByProjectId($client['project_id']);
 $foreach = '';
 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('שיכון ובינוי - סולל בונה תשתיות בע"מ');
-$pdf->SetTitle('דו"ח ליקויים ' . $report_serial . '');
+$pdf->SetTitle('דו"ח ליקויים לקבלן');
 
 foreach($faults AS $fault) {
-    if($fault['i_category'] != $current_category) {
+    $client = getClientBySerialId($fault['i_serial_number']);
+    if($client['st_apartment'] != ''){
+        $apartment = $client['st_apartment'];
+    }else{
+        $apartment = 'אין';
+    }
+//    check($client);
+    if($fault['type_id'] != $current_category) {
         $count = 1;
         if($foreach){
             $foreach .= "</div>";
         }
-        $foreach .= '<div style="page-break-inside:avoid;"><div style="border-bottom: 1px solid #15386F; color: #15386F; font-size: 14px; font-weight: bold;">תחום '. $fault['st_contractor_type'] .'</div><br>';
+        $foreach .= '<div style="page-break-inside:auto;"><div style="border-bottom: 1px solid #15386F; color: #15386F; font-size: 14px; font-weight: bold;">תחום '. $fault['st_contractor_type'] .'</div><br>';
     }
-    $foreach .= '<table style="padding: 5px; margin: 15px 0;page-break-inside:avoid; display: block">';
+    $foreach .= '<table style="padding: 5px; margin: 15px 0;">';
     $foreach .= '<tr>';
-    $foreach .= '<td style="border: 1px solid #cccccc; font-size: 12px; width: 4%; text-align: center; position: relative"><b>' . $count . '</b></td>';
-    $foreach .= '<td style="border: 1px solid #cccccc; font-size: 12px; width: 96%">' . $fault['st_title'] . '</td>';
+    $foreach .= '<td style="border: 1px solid #cccccc; font-size: 12px; width: 4%;"><b>' . $count . '</b></td>';
+    $foreach .= '<td style="border: 1px solid #cccccc; font-size: 12px; width: 10%;"><b style="color: #15386F">דירה: ' . $apartment . '</b></td>';
+    $foreach .= '<td style="border: 1px solid #cccccc; font-size: 12px; width: 86%">' . $fault['st_title'] . '</td>';
     $foreach .= '</tr>';
-    $notes = getAllFinishNotesByFaultId($fault['fault_id']);
+    $notes = getAllFinishNotesByFaultId($fault['id']);
     if($fault['st_fault_content']){
-        $foreach .= '<tr style="page-break-inside:avoid;"><td colspan="3" style="border: 1px solid #cccccc; font-size: 12px">' . $fault['st_fault_content'] . '</td></tr>';
+        $foreach .= '<tr><td colspan="3" style="border: 1px solid #cccccc; font-size: 12px; width: 100%">' . $fault['st_fault_content'] . '</td></tr>';
     }else{
         $foreach .= '<tr><td colspan="3" style="border: 1px solid #cccccc; font-size: 12px; color: #cccccc">אין הערות</td></tr>';
     }
     $foreach .= '</table>';
     $foreach .= '<div></div>';
-    $current_category = $fault['i_category'];
+    $current_category = $fault['type_id'];
     $count++;
 
 };
@@ -106,10 +121,10 @@ font-size: 12px;
 }
 
 </style>
-<p style="text-align: center; color: #15386F; font-weight: bold; font-size: 25px; text-decoration: underline;">דו"ח ביקורת ליקויים - מספר ' . $report_serial . '</p>
+<p style="text-align: center; color: #15386F; font-weight: bold; font-size: 25px; text-decoration: underline;">' . $contactor_name . '</p>
     <table>
         <tr>
-            <td style="line-height: 0; text-align: right;">לכבוד: <b>' . $client['st_user_name'] . '</b></td>
+            <td style="line-height: 0; text-align: right;">לכבוד: <b>' . $user_name_connect . '</b></td>
             <td style="line-height: 0; text-align: left;">תאריך הפקת דוח: <b>' . date("m.d.Y") . '</b></td>
         </tr>
     </table>
@@ -119,25 +134,11 @@ font-size: 12px;
             <td style="border-left: 1px solid #cccccc;">שם פרוייקט</td>
             <td style="border-left: 1px solid #cccccc;">כתובת</td>
             <td style="border-left: 1px solid #cccccc;">מנהל פרויקט</td>
-            <td style="border-left: 1px solid #cccccc;">מספר נכס</td>
-            <td>מספר נכס</td>
         </tr>
         <tr>
             <td style="border-left: 1px solid #cccccc;">' . $project['st_project_name'] . '</td>
             <td style="border-left: 1px solid #cccccc;">' . $project['st_project_address'] . '</td>
             <td style="border-left: 1px solid #cccccc;">' . $project['st_user_name'] . '</td>
-            <td style="border-left: 1px solid #cccccc;">' . $client['st_property_number'] . '</td>
-            <td>' . $client['st_apartment'] . '</td>
-        </tr>
-    </table>
-    <h3 style="text-align: center">פרטי מהנדס בודק</h3>
-    <table style="border: 1px solid #cccccc; padding: 5px">
-        <tr>
-            <td style="border-left: 1px solid #cccccc;"><b>שם: </b>' . $client['st_name_checker'] . '</td>
-            <td><b>נייד: </b>' . $phone_checker['st_phone_checker'] . '</td>
-        </tr>
-        <tr>
-            <td style="border: 1px solid #cccccc; font-family: DejaVu Sans, sans-serif" colspan="2">' . $client['st_checker'] . '</td>
         </tr>
     </table>
     <h3 style="text-align: center">רשימת ליקויים</h3>
@@ -161,7 +162,7 @@ $types = [
 ];
 for($ii = 0; $ii < count($imgs); $ii++){
     $b64 = $imgs[$ii]->getAttribute("src");
-    $imgs[$ii]->setAttribute("style", "page-break-inside:avoid; display: block; margin-left: auto; margin-right: auto; width: 216px; text-align: center;height: auto;page-break-inside:avoid");
+    $imgs[$ii]->setAttribute("style", "page-break-inside:avoid; display: block; margin-left: auto; margin-right: auto; width: 216px; text-align: center;height: auto;");
 //    $imgs[$ii]->setAttribute("style", "text-align: center;");
     if(strpos($b64, ";base64,") === false){
         continue;
@@ -185,19 +186,17 @@ for($ii = 0; $ii < count($imgs); $ii++){
     $imgs[$ii]->setAttribute("src", 'https://deliveryportal.pdactech.com/' . $path);
     $imgs[$ii]->setAttribute("width", '216');
     $imgs[$ii]->setAttribute("height", 'auto');
-    $imgs[$ii]->setAttribute("align", 'left');
+//    $imgs[$ii]->setAttribute("align", 'left');
 //    $ps[$ii]->setAttribute("align", "left");
-    $imgs[$ii]->setAttribute("dir", 'ltr');
+//    $imgs[$ii]->setAttribute("dir", 'ltr');
 
 }
 
 $h = ($temphtml->saveHTML($temphtml->documentElement));
 //$h = str_replace("<img", "<img style=\"text-align: left\"", $h);
 //
+
 //echo $h;
-////foreach($toDelete as $d){
-////    unlink($d);
-////}
 //exit();
 
 $pdf->setRTL(true);
@@ -222,4 +221,4 @@ foreach($toDelete as $d){
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document
-$pdf->Output('exportReport'. $report_serial .'.pdf', 'D');
+$pdf->Output('exportReport'. $project_id .'.pdf', 'D');

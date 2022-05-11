@@ -68,7 +68,7 @@ switch ($action){
         $res = handleApply();
         if($res){
             $pageMode = "done";
-            echo "Redirect me to success message";
+            header('Location: project.php?id=' . $projectId . '&msg=GroupCreateOk');
             exit;
         }
         else{
@@ -98,7 +98,7 @@ function handleFileUpload(){
 
 
     try{
-        $fileValidation = IOFactory::identify($file['tmp_name']);
+        $fileValidation = \PhpOffice\PhpSpreadsheet\IOFactory::identify($file['tmp_name']);
     }
     catch(Exception $e){
         $res->status = false;
@@ -177,7 +177,7 @@ function handleApply(){
 
 
     try{
-        $parser->insertToProject();
+         return $parser->insertToProject();
     }
     Catch(Exception $e){
         echo $e;
@@ -273,24 +273,30 @@ include_once 'includes/header.php';
                 <!--                <a title="הוספת דייר חדש" class="btn" href="clientEditor.php?id=">הוספת דייר חדש</a>-->
             </div>
     </div>
-    <div class="container__box">
+    <div class="container__box excel">
         <?php if(!$isValid && $parsed > 0): ?>
-            <p>התגלו נתונים לא תקינים בקובץ אקסל שהועלה. אנא תקנו והעלו את הקובץ מחדש.</p>
+            <p class="error">התגלו נתונים לא תקינים בקובץ אקסל שהועלה. אנא תקנו והעלו את הקובץ מחדש.</p>
         <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_BAD_HEADER']): ?>
-            <p>כותרות הקובץ לא תואמות לכותרות המצופות ע"י המערכת. אנא השתמשו בקובץ לדוגמא.</p>
+            <p class="error">כותרות הקובץ לא תואמות לכותרות המצופות ע"י המערכת. אנא השתמשו בקובץ לדוגמא.</p>
         <?php elseif(!$parsed && $parser->getValidationStatus() == $parser->sheetValidationStatuses['SHEET_EMPTY']): ?>
-            <p>לא נמצא מידע תקין הניתן לייבא למערכת</p>
+            <p class="error">לא נמצא מידע תקין הניתן לייבא למערכת</p>
         <?php endif; ?>
 
         <?php if(!$isValid && $parsed > 0 || !$parsed): ?>
             <form id="excel_upload_form" method="post" action="excel_review.php?project_id=<?=$projectId?>" enctype="multipart/form-data">
                 <div class="file-upload">
-                    <div class="file-select">
+                    <div class="file-select btn">
                         <input type="hidden" name="action" value="upload">
                         <div id="noFile" class="file-select-name">העלאת קובץ</div>
-                        <input accept="application/vnd.ms-excel" onchange="$('#excel_upload_form').submit()" id="chooseNewFile" type="file" name="spreadsheet">
+                        <input onchange="$('#excel_upload_form').submit()" id="chooseNewFile" type="file" name="spreadsheet">
                     </div>
                 </div>
+            </form>
+        <?php else: ?>
+            <p>הנתונים תקינים להמשך נא ללחוץ על כפתור שמור</p>
+            <form id="excel-apply-form" method="post" action="excel_review.php?project_id=<?=$projectId?>" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="apply">
+                <input class="btn btn_center" onchange="$('#excel-apply-form').submit()" type="submit" value="שמור">
             </form>
         <?php endif; ?>
     </div>
@@ -299,7 +305,7 @@ include_once 'includes/header.php';
 
 
     <div class="line"></div>
-    <table id="projects_table" class="table table-striped">
+    <table id="projects_table" class="table table-striped excel_table">
         <thead>
         <tr>
             <?= buildRow("th", $tableHeaders)?>
@@ -336,10 +342,10 @@ include_once 'includes/header.php';
 
 
 
-<script>
-    $("#excel-apply-btn").on("click", function(){
-        $("#excel-apply-form").submit();
-    });
-</script>
+<!--<script>-->
+<!--    $("#excel-apply-btn").on("click", function(){-->
+<!--        $("#excel-apply-form").submit();-->
+<!--    });-->
+<!--</script>-->
 <script src="js/excelEditor.js"></script>
 <?php include_once 'includes/footer.php'; ?>

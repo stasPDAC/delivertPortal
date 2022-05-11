@@ -137,18 +137,18 @@ include_once 'includes/header.php';
             <?= isset($msg_user_name) ? '<p class="error">' . $msg_user_name . '</p>' : '' ?>
 
             <label for="phone_first">*מספר נייד</label>
-            <input type="tel" name="phone_first" id="phone_first" placeholder="הזן את מספר הנייד"
+            <input class="input_ltr" type="tel" name="phone_first" id="phone_first" placeholder="הזן את מספר הנייד"
                    value="<?= isset($idToEdit) ? htmlentities($client['st_phone_first']) : '' ?><?=isset($phone_first) && !isset($idToEdit)?$phone_first:''?>" pattern="^[0-9\-\+]{9,15}$" required
                    oninvalid="this.setCustomValidity('אנא הזן את מספר הנייד')" oninput="this.setCustomValidity('')">
             <?= isset($msg_phone_first) ? '<p class="error">' . $msg_phone_first . '</p>' : '' ?>
 
             <label for="phone_second">מספר נייד משני</label>
-            <input type="tel" name="phone_second" id="phone_second" placeholder="הזן את מספר הנייד משני"
+            <input class="input_ltr" type="tel" name="phone_second" id="phone_second" placeholder="הזן את מספר הנייד משני"
                    value="<?= isset($idToEdit) ? htmlentities($client['st_phone_second']) : '' ?><?=isset($phone_second) && !isset($idToEdit)?$phone_second:''?>" pattern="^[0-9\-\+]{9,15}$"
                    oninvalid="this.setCustomValidity('אנא הזן את מספר הנייד')" oninput="this.setCustomValidity('')">
 
             <label for="mail"><?= $mail_title ?></label>
-            <input type="email" name="mail" id="mail" placeholder="הזן <?= $mail_title ?>"
+            <input class="input_ltr" type="email" name="mail" id="mail" placeholder="הזן <?= $mail_title ?>"
                    value="<?= isset($idToEdit) ? htmlentities($client['st_mail']) : '' ?><?=isset($mail) && !isset($idToEdit)?$mail:''?>" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                    oninvalid="this.setCustomValidity('אנא הזן <?= $mail_title ?> תקני')" oninput="this.setCustomValidity('')">
 

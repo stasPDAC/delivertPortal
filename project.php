@@ -6,6 +6,9 @@ global $icons;
 global $user_type;
 $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
 switch ($msg){
+    case 'GroupCreateOk':
+        $msg = 'הדיירים החדשים נוספו בהצלחה';
+        break;
     case 'createOk':
         $msg = 'דייר חדש נוצר בהצלחה';
         break;

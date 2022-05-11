@@ -64,7 +64,7 @@ include_once 'includes/header.php';
             <p class="main_container__des"> (סטטוס תקלה: <?=$fault['st_fault_status_name']?>)</p>
         </div>
         <div class="flex">
-            <a class="btn outline_btn" href="notes.php">חזרה</a>
+            <a class="btn outline_btn" href="notes.php?id=<?=$client['i_project_id']?>">חזרה</a>
         </div>
     </div>
 

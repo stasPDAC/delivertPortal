@@ -26,11 +26,16 @@ if($action){
     $fault_status = filter_input(INPUT_POST, 'fault_status', FILTER_SANITIZE_NUMBER_INT);
 
     $note = filter_input(INPUT_POST, 'note', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    $client_note = filter_input(INPUT_POST, 'client_note', FILTER_SANITIZE_SPECIAL_CHARS);
+    if($user_type != 2 || $user_type != 5){
+        $client_note = '';
+    }
 }
 
 switch ($action) {
     case 'edit':
-        createNewNote($status, $report_serial, $fault_id, $note, $fault_status);
+        createNewNote($status, $report_serial, $fault_id, $note, $fault_status, $client_note);
         break;
     default;
 }
@@ -56,7 +61,7 @@ include_once 'includes/header.php';
             <input type="hidden" name="fault_status" value="<?= $fault['i_fault_status'] ?>">
 
             <label for="status">סטטוס תקלה</label>
-            <select name="status" id="status" required>
+            <select name="status" id="status" <?= $user_type == 2 || $user_type == 5 ? 'onchange="statusSelectFunction()"' : ''?> required>
                 <option value="" hidden disabled selected>בחר סטטוס</option>
                 <?php foreach ($statuses AS $status) : ?>
                     <?php if($user_type == 1 && $status['id'] !=0 && $status['id'] !=1 ) : ?>
@@ -73,9 +78,27 @@ include_once 'includes/header.php';
 
             <label for="note">הערות</label>
             <textarea id="note" name="note" placeholder="הזן הערות"></textarea>
+            <?php if($user_type == 2 || $user_type == 5) : ?>
+                <label id="client_note_label" for="client_note" style="display: none">טקסט הכרעה שיוצג ללקוח</label>
+                <textarea id="client_note" name="client_note" style="display: none" placeholder="הזן טקסט הכרעה שיוצג ללקוח"></textarea>
+            <?php endif; ?>
             <input class="btn btn_center" value="שמור" type="submit">
         </form>
     </div>
 </div>
-<script src="js/reports.js"></script>
+<?php if($user_type == 2 || $user_type == 5) : ?>
+    <script>
+        function statusSelectFunction() {
+            let status = document.getElementById("status").value;
+            if(status == 4 || status == 5){
+                document.getElementById("client_note").style.display = "block";
+                document.getElementById("client_note_label").style.display = "block";
+            }else{
+                document.getElementById("client_note").style.display = "none";
+                document.getElementById("client_note_label").style.display = "none";
+            }
+        }
+    </script>
+<?php endif; ?>
+<script src="js/note.js"></script>
 <?php include_once 'includes/footer.php'; ?>

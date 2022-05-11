@@ -32,9 +32,10 @@ $(document).ready(function () {
     const modal = document.getElementById("myModal");
     const btn = document.getElementById("myBtn");
     const span = document.getElementsByClassName("close")[0];
-
-    btn.onclick = function() {
-        modal.style.display = "flex";
+    if(btn){
+        btn.onclick = function() {
+            modal.style.display = "flex";
+        }
     }
 
     span.onclick = function() {
@@ -45,5 +46,28 @@ $(document).ready(function () {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+    }
+
+    document.getElementById("step_1").addEventListener("click", FunctionView1);
+    document.getElementById("step_2").addEventListener("click", FunctionView2);
+    document.getElementById("step_3").addEventListener("click", FunctionView3);
+    document.getElementById("info").addEventListener("click", FunctionView4);
+
+    function FunctionView1() {
+        document.getElementById("view_1").style.display = "none";
+        document.getElementById("view_2").style.display = "block";
+    }
+    function FunctionView2() {
+        document.getElementById("view_2").style.display = "none";
+        document.getElementById("view_3").style.display = "block";
+    }
+    function FunctionView3() {
+        document.getElementById("welcome").style.display = "none";
+    }
+    function FunctionView4() {
+        document.getElementById("welcome").style.display = "flex";
+        document.getElementById("view_1").style.display = "none";
+        document.getElementById("view_2").style.display = "none";
+        document.getElementById("view_3").style.display = "block";
     }
 })

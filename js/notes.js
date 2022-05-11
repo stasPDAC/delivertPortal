@@ -1,9 +1,9 @@
 $(document).ready(function () {
     $('#projects_table').DataTable({
         columnDefs: [
-            {orderable: false, targets: [3]}
+            {orderable: false, targets: [-1]}
         ],
-        order: [[0, 'asc']],
+        order: [[2, 'asc']],
         pageLength: 50,
         language: {
             search: "",

@@ -79,7 +79,8 @@ include_once 'includes/header.php';
                 <?php endforeach; ?>
             </select>
             <label for="title">כותרת</label>
-            <input type="text" name="title" id="title" placeholder="הזן כותרת" value="<?= isset($idToEdit) ? htmlentities($fault['st_title']) : '' ?>">
+            <input type="text" name="title" id="title" placeholder="הזן כותרת" value="<?= isset($idToEdit) ? htmlentities($fault['st_title']) : '' ?>" required
+                   oninvalid="this.setCustomValidity('אנא הזן כותרת')" oninput="this.setCustomValidity('')">
             <label for="articleBodyEditor">תאור תקלה</label>
             <textarea id="articleBodyEditor" name="body_text" placeholder="הזן תאור תקלה"><?= isset($idToEdit) ? html_entity_decode($fault['st_fault_content']) : '' ?></textarea>
             <input id="imageInput" type="file" accept="image/*" style="display: none">

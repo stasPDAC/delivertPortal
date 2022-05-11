@@ -50,10 +50,12 @@ include_once 'includes/header.php';
             <input type="hidden" name="report_serial" value="<?= $report_serial ?>">
 
             <label for="name">שם של הבודק</label>
-            <input type="text" name="name" id="name" placeholder="הזן כותרת" value="<?= htmlentities($report['st_name_checker']) ?>">
+            <input type="text" name="name" id="name" placeholder="הזן כותרת" value="<?= htmlentities($report['st_name_checker']) ?>" required
+                   oninvalid="this.setCustomValidity('אנא הזן את שם הדייר')" oninput="this.setCustomValidity('')">
 
             <label for="phone">מספר נייד של בודק</label>
-            <input type="tel" name="phone" id="phone" placeholder="הזן כותרת" value="<?= $phone_checker['st_phone_checker'] ?>">
+            <input class="input_ltr" type="tel" name="phone" id="phone" placeholder="הזן כותרת" value="<?= $phone_checker['st_phone_checker'] ?>" pattern="^[0-9\-\+]{9,15}$" required
+                   oninvalid="this.setCustomValidity('אנא הזן את מספר הנייד')" oninput="this.setCustomValidity('')">
 
             <label for="articleBodyEditor">פרטים</label>
             <textarea id="articleBodyEditor" name="body_text" placeholder="הזן פרטים"><?= html_entity_decode($report['st_checker']) ?></textarea>

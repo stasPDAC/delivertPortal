@@ -222,7 +222,9 @@ nav span {
     justify-content: center;
     flex-direction: column;
 }
-
+.desc{
+    display: none;
+}
 .sub_bt {
     position: relative;
     cursor: pointer;
@@ -458,6 +460,10 @@ input, select, textarea {
     border-radius: 4px;
     margin: 8px auto;
 }
+.input_ltr{
+    direction: ltr;
+    text-align: right;
+}
 .flex_inputs{
     display: flex;
     justify-content: space-between;
@@ -467,7 +473,7 @@ input, select, textarea {
     margin: 8px 0;
 }
 textarea{
-    height: 300px;
+    height: 200px;
 }
 form label {
     margin: 16px auto 8px;
@@ -553,13 +559,25 @@ form label {
     display: flex;
     justify-content: space-between;
     margin: 30px 0;
+    flex-wrap: wrap;
 }
-
+.views:first-child{
+    display: block;
+}
+.views{
+    display: none;
+}
+.views a{
+    cursor: pointer;
+}
 .main_container__title {
     color: #15386F;
     text-align: right;
     font-size: 2em;
     font-weight: bold;
+}
+.container__title.fault{
+    margin: 8px auto;
 }
 .main_container__status{
     color: #15386F;
@@ -630,6 +648,16 @@ form label {
     width: 100%;
     box-shadow: 0 3px 10px #00000016;
     border-radius: 10px;
+}
+.container__box.excel p{
+    text-align: center;
+    line-height: normal;
+    max-width: 600px;
+    margin: auto;
+}
+.container__box.excel p.error{
+    color: red;
+    font-size: 1em;
 }
 .container__box.fault{
     padding: 0;
@@ -789,7 +817,11 @@ input.btn, button.btn {
     display: block;
     max-width: fit-content
 }
-
+.info_btn{
+    position: fixed;
+    bottom: 8px;
+    right: 16px;
+}
 .btn:hover {
     opacity: .6;
 }
@@ -822,8 +854,9 @@ input.btn, button.btn {
     top: 28px;
     right: 28px;
 }
-td{
+.excel_table td{
     position: relative;
+    overflow: unset!important;
 }
 td a {
     color: #BAC405;
@@ -873,7 +906,11 @@ td a:hover {
     max-width: 300px;
     z-index: 2;
 }
-
+.td_hover_list svg{
+    height: 24px;
+    fill: var(--color_green);
+    vertical-align: bottom;
+}
 .delete {
     background-color: transparent;
     border: none;
@@ -922,23 +959,11 @@ p.middle_title {
 /* MODAL */
 .modal {
     display: none;
-    /*position: fixed;*/
-/*    z-index: 1;*/
-/*    padding-top: 100px;*/
-/*    left: 0;*/
-/*    top: 0;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    overflow: auto;*/
-/*    background-color: rgb(0,0,0);*/
-/*    background-color: rgba(0,0,0,0.4);*/
-
-
     background-color: rgba(0, 0, 0, 0.39);
     width: 100%;
     height: 100vh;
     position: fixed;
-    z-index: 100;
+    z-index: 101;
     flex-direction: column;
     justify-content: center;
     top: 0;
@@ -962,7 +987,7 @@ p.middle_title {
     margin: auto;
     width: calc(100% - 40px);
     max-width: 600px;
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
     height: auto;
     position: relative;
@@ -1041,9 +1066,9 @@ p.middle_title {
     color: var(--color_222);
     cursor: pointer;
     font-weight: bold;
-    line-height: 45px;
+    /*line-height: 45px;*/
     text-align: center;
-    background: var(--color_green);
+    background-color: var(--color_green);
     overflow: hidden;
     position: relative;
     border-radius: 4px;
@@ -1052,6 +1077,10 @@ p.middle_title {
     max-width: 120px;
     margin: 20px auto 0;
     transition: .3s;
+}
+.file-select.outline_btn{
+    margin: 0 0 0 20px!important;
+    background-color: transparent;
 }
 
 .file-upload .file-select input[type="file"] {
@@ -1141,6 +1170,9 @@ p.middle_title {
 }
 
 @media (min-width: 768px) {
+    .desc{
+        display: block;
+    }
     .main_container__box .container, .domains__item {
         width: 31%;
     }
