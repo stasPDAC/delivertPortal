@@ -5,6 +5,9 @@ global $pdo;
 global $icons;
 global $user_type;
 global $user_id;
+if($user_type != 1 && $user_type != 2 && $user_type != 5){
+    error404();
+}
 $page = 'projects';
 $project_id = '';
 $project_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);

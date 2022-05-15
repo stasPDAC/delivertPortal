@@ -6,7 +6,10 @@ global $mail_title;
 $page = 'users';
 $sub_page = 'contractors';
 include_once 'includes/global.php';
-
+global $user_type;
+if($user_type != 1){
+    error404();
+}
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
 if ($action) {
     $user_name = filter_input(INPUT_POST, 'user_name', FILTER_SANITIZE_SPECIAL_CHARS);

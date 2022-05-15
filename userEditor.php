@@ -3,9 +3,13 @@ require_once 'includes/config.php';
 global $pdo;
 global $icons;
 global $mail_title;
+global $user_type;
 $page = 'users';
 $sub_page = 'admins';
 include_once 'includes/global.php';
+if($user_type != 1){
+    error404();
+}
 
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
 if ($action) {

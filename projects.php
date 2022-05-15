@@ -13,8 +13,7 @@ if($user_type == 1){
 }elseif($user_type == 3){
     $projects = getAllProjectsByContractorIdForProjectsPage($user_id);
 }else{
-    header('Location: /');
-    exit;
+    error404();
 }
 if(isset($msg)){
     $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);

@@ -4,6 +4,9 @@ include_once 'includes/global.php';
 $page = 'projects';
 global $icons;
 global $user_type;
+if($user_type != 1 && $user_type != 2 && $user_type != 5){
+    error404();
+}
 $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
 switch ($msg){
     case 'GroupCreateOk':

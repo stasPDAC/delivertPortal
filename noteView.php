@@ -3,7 +3,18 @@ require_once 'includes/config.php';
 include_once 'includes/global.php';
 $page = 'notes';
 global $icons;
+global $user_id;
 global $user_type;
+
+if($user_type == 3){
+    $fault_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
+    $check_fault_id = checkNotePermission($fault_id);
+    if(!$check_fault_id){
+        error404();
+    }
+}else{
+    error404();
+}
 $edit = false;
 $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
 switch ($msg){
@@ -38,7 +49,6 @@ switch ($action){
         break;
     default;
 }
-//$report_serial = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 $fault_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 
 if($fault_id){
@@ -47,8 +57,7 @@ if($fault_id){
     $client = getClientBySerialId($report_serial);
     $project = getProjectByProjectId($client['i_project_id']);
 }else{
-    header('Location: /');
-    exit;
+    error404();
 }
 
 include_once 'includes/head.php';

@@ -50,9 +50,11 @@ $pdf->setRTL(true);
 // add a page
 $pdf->AddPage();
 global $user_name_connect;
+global $user_type;
 
 
 $project_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
+checkFaultReportPermission($project_id);
 $user_id = filter_input(INPUT_GET, 'u', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $faults = getAllReportsFaultsByContractorsIdAndProjectId($user_id, $project_id);

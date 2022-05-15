@@ -19,6 +19,142 @@ function getPercentage($all_finish_reports_count, $all_reports_count){
     return $response;
 }
 
+function error404(){
+    http_response_code(404);
+    include('404.html');
+    exit;
+}
+
+function sendMailToClient($User_name, $email, $serial_number)
+{
+    if ($email) {
+        $domain = 'https://deliveryportal.pdactech.com/';
+        $html = '<div dir="rtl" style="width: 100%; display: flex; justify-content: center; flex-direction: column">
+                        <div style="width: 100%; max-width: 900px; padding: 30px; border-radius: 10px; margin: 20px auto">
+                            <div>
+                                <img style="height: 60px; display: block; margin: 17px auto" src="' . $domain . 'images/logo.png" alt="BUILDEAL">
+                            </div>
+                            <div style="width: 90%; margin: 15px auto">
+                                <p style="text-align: center; font-size: 20px; margin: 0 0 10px 0; line-height: normal; font-weight: bold; color: #222">ברוכים הבאים לפורטל דוחות מסירה</p>
+                                <p style="font-weight: bold; text-align: center; font-size: 30px; margin: 0; color: #222">שלום ' . $User_name . ' ומזל טוב על רכישת נכס</p>
+                                <p style="text-align: center; font-size: 20px; margin: 0; line-height: normal; color: #222">פורטל המכרזים הוקם במטרה להקל על תהליך בדיקת הנכס, בשלב זה תוכלו לוודא כי הנכס החדש שלכם עומד בתקנים ותקנות הבנייה.
+ את הבדיקה תוכלו לבצע בעצמכם או ע"י מהנדס או חברת בדק בית, את דוח הליקויים ניתן יהיה העלות לאתר וכך בצורה קלה וללא המתנה תוכלו להעביר את דוח התקלות לטיפול.
+יש לשים לב להוראות השימוש באתר, בכל פנייה או שאלה בנושא  נשמח להיות לעזר,חברת שיכון ובינוי.</p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; width: max-content; margin: auto">
+                                <a href="' . $domain . '?report=' . $serial_number . '" style="padding: 8px 16px; border-radius: 8px; color: #222; background-color: #BAC405; display: block; margin: 10px; width: 200px; text-align: center; text-decoration: none; font-size: 20px">מעבר לדו"ח</a>
+                            </div>
+                            <div style="margin: 30px 0 20px; height: 1px; width: 100%; background-color: #BAC405"></div>
+                            <p style="text-align: center; margin: 5px 0 0; font-size: 20px; color: #222">מייל זה נשלח כהודעה אוטומטית ממערכת</p>
+                            <p style="text-align: center; margin: 0; font-size: 20px; color: #222"> לעזרה בכל נושא ניתן ליצור איתנו קשר במייל <a style="color: black" href="mailto:elian@pdactech.coml">elian@pdactech.com</a></p>
+                        </div>
+                    </div>';
+
+        $subject = "Mail from shikunbinui site";
+        $to = $email;
+        $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
+        $headers .= "From: shikunbinui web server <noreply@shikunbinui.com>" . "\r\n";
+
+        if (mail($to, $subject, $html, $headers)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function sendMail($User_name, $email)
+{
+    if ($email) {
+        $domain = 'https://deliveryportal.pdactech.com/';
+        $html = '<div dir="rtl" style="width: 100%; display: flex; justify-content: center; flex-direction: column">
+                        <div style="width: 100%; max-width: 900px; padding: 30px; border-radius: 10px; margin: 20px auto">
+                            <div>
+                                <img style="height: 60px; display: block; margin: 17px auto" src="' . $domain . 'images/logo.png" alt="BUILDEAL">
+                            </div>
+                            <div style="width: 90%; margin: 15px auto">
+                                <p style="text-align: center; font-size: 20px; margin: 0 0 10px 0; line-height: normal; font-weight: bold; color: #222">ברוכים הבאים לפורטל דוחות מסירה</p>
+                                <p style="font-weight: bold; text-align: center; font-size: 30px; margin: 0; color: #222">שלום ' . $User_name . ' ומזל טוב על רכישת נכס</p>
+                                <p style="text-align: center; font-size: 20px; margin: 0; line-height: normal; color: #222">פורטל המכרזים הוקם במטרה להקל על תהליך קבלת ליקויים מדיירי הפרויקט, במערכת הזאת תוכלו לקבל את דוחות הליקויים של הדיירים.
+יש לשים לב לסטטוס הפנייה, התקלות שתיתקל בהן באתר הן רלונטיות ספציפית עבורך.
+יש לשים לב להוראות השימוש באתר, בכל פנייה או שאלה בנושא  נשמח להיות לעזר,חברת שיכון ובינוי.
+</p>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; width: max-content; margin: auto">
+                                <a href="' . $domain . '" style="padding: 8px 16px; border-radius: 8px; color: #222; background-color: #BAC405; display: block; margin: 10px; width: 200px; text-align: center; text-decoration: none; font-size: 20px">מעבר לאתר</a>
+                            </div>
+                            <div style="margin: 30px 0 20px; height: 1px; width: 100%; background-color: #BAC405"></div>
+                            <p style="text-align: center; margin: 5px 0 0; font-size: 20px; color: #222">מייל זה נשלח כהודעה אוטומטית ממערכת</p>
+                            <p style="text-align: center; margin: 0; font-size: 20px; color: #222"> לעזרה בכל נושא ניתן ליצור איתנו קשר במייל <a style="color: black" href="mailto:elian@pdactech.coml">elian@pdactech.com</a></p>
+                        </div>
+                    </div>';
+
+        $subject = "Mail from shikunbinui site";
+        $to = $email;
+        $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
+        $headers .= "From: shikunbinui web server <noreply@shikunbinui.com>" . "\r\n";
+
+        if (mail($to, $subject, $html, $headers)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function supportMail($name, $phone, $mail, $msg)
+{
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $user_ip = $_SERVER['REMOTE_ADDR'];
+    $html =  "<div dir='rtl' style='width: 100%; margin: auto; border: 1px solid #e6e6e6; max-width: 600px; padding: 5px 0;'>" .
+        "<h3 style='color: #202124; width: 90%; margin: 15px auto;'>יצירת קשר</h3>" .
+        "<table style='color: #666; border-collapse: collapse; width: 90%; margin: auto;'>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse;'>שם:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $name . "</td>" .
+        "</tr>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse;'>מייל:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $mail . "</td>" .
+        "</tr>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse;'>טלפון:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $phone . "</td>" .
+        "</tr>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse; vertical-align: top;'>תוכן הודעה:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $msg . "</td>" .
+        "</tr>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse; vertical-align: top;'>דפדפן:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $user_agent . "</td>" .
+        "</tr>" .
+        "<tr style='border-collapse: collapse;'>" .
+        "<td style='border: 1px solid #e6e6e6; background-color: #fafafa; padding: 6px 8px; border-collapse: collapse;'>IP של הלקוח:</td>" .
+        "<td style='border: 1px solid #e6e6e6; padding: 6px 8px;'>" . $user_ip . "</td>" .
+        "</tr>" .
+        "</table>" .
+        "<p style='color: #ccc; width: 90%; margin: 15px auto;'>מייל זה נשלח כהודעה אוטומטית ממערכת</p>" .
+        "<div style='width: 90%; margin: auto; height: 1px; background: #ccc;'></div>" .
+        "<p style='color: #ccc; width: 90%; margin: 15px auto;'>אזהרה, אם מופיע מידע מפוקפק בטקסט, אל תתייחס לאימייל ובשום אופן לא עובר דרך הקישורים </p>" .
+        "</div>";
+
+        $subject = "פורטל דוחות מסירה";
+        $to = 'stas@pdactech.com, elian@pdactech.com';
+        $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
+        $headers .= "From: יצירת קשר <noreply@shikunbinui.com>" . "\r\n";
+
+        if (mail($to, $subject, $html, $headers)) {
+            header('Location: /?mail=mail');
+            exit();
+        } else {
+            return false;
+        }
+}
 
 /////////////////////////////////// SELECT ///////////////////////////////////
 
@@ -83,6 +219,174 @@ function checkKitchenOrBathroomContractorBySerialNumber($serial_number)
     return $response;
 }
 
+function checkProjectId($project_id)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT * FROM tb_projects WHERE id = :id');
+    $stmt->bindParam(':id', $project_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkProjectIdAndManagerId($project_id)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT * FROM tb_projects WHERE id = :id AND i_project_manager = :i_project_manager');
+    $stmt->bindParam(':id', $project_id);
+    $stmt->bindParam(':i_project_manager', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkProjectIdContractorId($project_id)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT * FROM tb_projects
+        LEFT JOIN tb_projects_conn ON tb_projects_conn.i_project_id = tb_projects.id
+        WHERE tb_projects.id = :project_id AND i_contractor_id = :user_id');
+    $stmt->bindParam(':project_id', $project_id);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkSerialNumber($serial_number)
+{
+    global $pdo;
+    $stmt = $pdo->prepare('SELECT i_serial_number FROM tb_reports WHERE i_serial_number = :i_serial_number');
+    $stmt->bindParam(':i_serial_number', $serial_number);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkSerialNumberAndManagerId($serial_number)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT tb_reports.i_serial_number, tb_projects.i_project_manager FROM tb_reports 
+        LEFT JOIN tb_projects ON tb_projects.id = tb_reports.i_project_id
+        WHERE i_serial_number = :i_serial_number AND tb_projects.i_project_manager = :user_id');
+    $stmt->bindParam(':i_serial_number', $serial_number);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkSerialNumberAndContractorId($serial_number)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT tb_reports.i_serial_number, tb_projects_conn.i_contractor_id FROM tb_reports
+        LEFT JOIN tb_projects_conn ON tb_projects_conn.i_project_id = tb_reports.i_project_id
+        WHERE tb_reports.i_serial_number = :i_serial_number AND tb_projects_conn.i_contractor_id = :user_id');
+    $stmt->bindParam(':i_serial_number', $serial_number);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkSerialNumberAndClientId($serial_number)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT tb_reports.i_serial_number, tb_users.id FROM tb_reports
+        LEFT JOIN tb_users ON tb_users.i_serial_number = tb_reports.i_serial_number
+        WHERE tb_reports.i_serial_number = :i_serial_number AND tb_users.id = :user_id');
+    $stmt->bindParam(':i_serial_number', $serial_number);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkNotePermission($fault_id)
+{
+    global $pdo;
+    global $user_id;
+    $stmt = $pdo->prepare('SELECT * FROM tb_fault 
+LEFT JOIN tb_reports ON tb_reports.i_serial_number = tb_fault.i_serial_number
+LEFT JOIN tb_projects_conn ON tb_projects_conn.i_project_id = tb_reports.i_project_id
+WHERE tb_fault.id = :id AND tb_projects_conn.i_contractor_id = :i_contractor_id');
+    $stmt->bindParam(':id', $fault_id);
+    $stmt->bindParam(':i_contractor_id', $user_id);
+    $stmt->execute();
+    $response = $stmt->fetchAll();
+    $stmt = null;
+
+    return $response;
+}
+
+function checkReportPermission($report_serial){
+    global $user_type;
+    if($user_type == 1 || $user_type == 5){
+        $check_serial = checkSerialNumber($report_serial);
+        if(!$check_serial){
+            error404();
+        }
+    }elseif ($user_type == 2){
+        $check_serial = checkSerialNumberAndManagerId($report_serial);
+        if(!$check_serial){
+            error404();
+        }
+    }elseif ($user_type == 3){
+        $check_serial = checkSerialNumberAndContractorId($report_serial);
+        if(!$check_serial){
+            error404();
+        }
+    }elseif ($user_type == 4){
+        $check_serial = checkSerialNumberAndClientId($report_serial);
+        if(!$check_serial){
+            error404();
+        }
+    }else{
+        error404();
+    }
+}
+
+function checkFaultReportPermission($project_id){
+    global $user_type;
+    if($user_type == 1 || $user_type == 5){
+        $check_serial = checkProjectId($project_id);
+        if(!$check_serial){
+            error404();
+        }
+    }elseif ($user_type == 2){
+        $check_serial = checkProjectIdAndManagerId($project_id);
+        if(!$check_serial){
+            error404();
+        }
+    }elseif ($user_type == 3){
+        $check_serial = checkProjectIdContractorId($project_id);
+        if(!$check_serial){
+            error404();
+        }
+    }else{
+        error404();
+    }
+}
+
 function getAllProjectNames($project_name)
 {
     global $pdo;
@@ -139,6 +443,7 @@ function getAllProjectsByContractorIdForProjectsPage($contractor_id){
 
     return $response;
 }
+
 function getAllProjectsByContractorId($contractor_id)
 {
     global $pdo;
@@ -809,6 +1114,9 @@ function createNewClient($project_id, $user_name, $phone_first, $phone_second, $
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         if ($stmt->rowCount() > 0) {
+            if($mail != ''){
+                sendMailToClient($user_name, $mail, $serial_number);
+            }
             header('Location: project.php?id=' . $project_id . '&msg=createOk');
             exit;
         } else {
@@ -899,6 +1207,9 @@ function createNewAdmin($user_name, $phone_first, $mail, $type)
     $stmt->execute($params);
 
     if ($stmt->rowCount() > 0) {
+        if($mail != ''){
+            sendMail($user_name, $mail);
+        }
         header('Location: users.php?msg=createOk');
         exit;
     } else {
@@ -927,6 +1238,9 @@ function createNewInspector($user_name, $phone_first, $mail, $type)
     $stmt->execute($params);
 
     if ($stmt->rowCount() > 0) {
+        if($mail != ''){
+            sendMail($user_name, $mail);
+        }
         header('Location: inspectors.php?msg=createOk');
         exit;
     } else {
@@ -955,6 +1269,9 @@ function createNewManager($user_name, $phone_first, $mail, $type)
     $stmt->execute($params);
 
     if ($stmt->rowCount() > 0) {
+        if($mail != ''){
+            sendMail($user_name, $mail);
+        }
         header('Location: managers.php?msg=createOk');
         exit;
     } else {
@@ -994,6 +1311,9 @@ function createNewContractor($user_name, $phone_first, $mail, $type, $checkboxes
             }
         }
         if ($stmt->rowCount() > 0) {
+            if($mail != ''){
+                sendMail($user_name, $mail);
+            }
             header('Location: contractors.php?msg=createOk');
             exit;
         }
@@ -1149,8 +1469,6 @@ function updateClientById($user_name, $project_id, $client_id, $phone_first, $ph
         $stmt->bindParam(':i_project_id', $project_id);
         $stmt->execute();
         $stmt = null;
-
-
 
         header('Location: project.php?id=' . $project_id . '&msg=editOk');
         exit;

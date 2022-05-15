@@ -3,12 +3,16 @@ require_once 'includes/config.php';
 global $pdo;
 global $icons;
 global $mail_title;
+global $user_type;
 $page = 'projects';
 $contractor_check = '';
 $user_name_check = true;
 $phone_first_check = true;
 require_once 'includes/global.php';
 require_once 'includes/functions.php';
+if($user_type != 1){
+    error404();
+}
 $project_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 if($project_id){
     $contractor_check = checkKitchenOrBathroomContractorByProjectId($project_id);

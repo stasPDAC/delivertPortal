@@ -10,8 +10,7 @@ if($report_serial){
     $report = getReportBySerialId($report_serial);
     $phone_checker = getPhoneCheckerBySerialId($report_serial);
 }else{
-    header('Location: /');
-    exit;
+    error404();
 }
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
 if($action){

@@ -39,7 +39,9 @@
 a, p, input, td, th, tr {
     font-family: Assistant, sans-serif !important;
 }
-
+a:focus, a:active{
+    outline: none;
+}
 .pre_main{
     width: 100%;
     color: #15386F;

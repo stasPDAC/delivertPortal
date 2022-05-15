@@ -6,6 +6,10 @@ global $icons;
 global $user_type;
 global $user_id;
 $page = 'notes';
+global $user_type;
+if($user_type != 3){
+    error404();
+}
 if($user_type == 3){
     $project_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
     if ($project_id){

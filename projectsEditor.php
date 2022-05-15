@@ -2,10 +2,14 @@
 require_once 'includes/config.php';
 global $pdo;
 global $icons;
+global $user_type;
 $page = 'projects';
 $project_check = true;
 $project_name_check = true;
 include_once 'includes/global.php';
+if($user_type != 1){
+    error404();
+}
 $all_contractor_types = getAllContractorTypes();
 $manageress = getAllManageressActivities();
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);

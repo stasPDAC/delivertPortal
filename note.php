@@ -4,6 +4,9 @@ include_once 'includes/global.php';
 $page = 'notes';
 global $icons;
 global $user_type;
+if($user_type == 4){
+    error404();
+}
 $edit = false;
 $report_serial = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 $fault_id = filter_input(INPUT_GET, 'fault', FILTER_SANITIZE_SPECIAL_CHARS);

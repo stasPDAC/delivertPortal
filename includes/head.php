@@ -15,12 +15,14 @@
 
     <?php
         global $icons;
+        global $page;
         if (isset($_SESSION["invert"]) && $_SESSION["invert"] == "true") {echo '<style>body{filter: invert(100%)}</style>';}
         if (isset($_SESSION["font_size"]) && $_SESSION["font_size"] == "false") {echo '<style>body{font-size: 20px}</style>';}
     ?>
 
 </head>
 <body>
+<?php if($page != 'support') : ?>
 <button aria-label="אפשרויות נגישת" aria-expanded="false" class="accessibility_btn show_accessibility"><?= $icons['accessible'] ?></button>
 <div class="accessibility_open">
     <button aria-label="סגירת אפשרויות נגישת" class="show_accessibility"><?= $icons['close'] ?></button>
@@ -30,3 +32,4 @@
     <button role="link" aria-label="עבוד לדף נצהרת נגישות" onclick="location.href='/accessibility'"><?= $icons['info'] ?></button>
 </div>
 <script src="../js/head.js"></script>
+<?php endif; ?>

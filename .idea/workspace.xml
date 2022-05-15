@@ -4,7 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="upload excel clients" />
+    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="upload excel clients">
+      <change afterPath="$PROJECT_DIR$/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/support.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clientEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/clientEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients.php" beforeDir="false" afterPath="$PROJECT_DIR$/clients.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contractorEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/contractorEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contractors.php" beforeDir="false" afterPath="$PROJECT_DIR$/contractors.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/login_style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examiner.php" beforeDir="false" afterPath="$PROJECT_DIR$/examiner.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/head.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/head.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/mail.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inspectorEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/inspectorEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inspectors.php" beforeDir="false" afterPath="$PROJECT_DIR$/inspectors.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logout.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/managerEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/managerEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/managers.php" beforeDir="false" afterPath="$PROJECT_DIR$/managers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/note.php" beforeDir="false" afterPath="$PROJECT_DIR$/note.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/noteView.php" beforeDir="false" afterPath="$PROJECT_DIR$/noteView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notes.php" beforeDir="false" afterPath="$PROJECT_DIR$/notes.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pdf_clientReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/pdf_clientReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pdf_exportReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/pdf_exportReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pdf_faultReport.php" beforeDir="false" afterPath="$PROJECT_DIR$/pdf_faultReport.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.php" beforeDir="false" afterPath="$PROJECT_DIR$/project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects.php" beforeDir="false" afterPath="$PROJECT_DIR$/projects.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectsEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/projectsEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report.php" beforeDir="false" afterPath="$PROJECT_DIR$/report.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reports.php" beforeDir="false" afterPath="$PROJECT_DIR$/reports.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/userEditor.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.php" beforeDir="false" afterPath="$PROJECT_DIR$/users.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view.php" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +81,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Sizmore" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BrandMeWebsite" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -139,7 +173,9 @@
       <workItem from="1651999200656" duration="13187000" />
       <workItem from="1652084227308" duration="21554000" />
       <workItem from="1652171856493" duration="1171000" />
-      <workItem from="1652250437648" duration="7931000" />
+      <workItem from="1652250437648" duration="9716000" />
+      <workItem from="1652331947196" duration="853000" />
+      <workItem from="1652595967162" duration="24912000" />
     </task>
     <task id="LOCAL-00001" summary="Accessibility corrections from the report">
       <created>1640179381701</created>

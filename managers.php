@@ -4,7 +4,10 @@ include_once 'includes/global.php';
 $page = 'users';
 $sub_page = 'managers';
 global $icons;
-
+global $user_type;
+if($user_type != 1){
+    error404();
+}
 $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
 switch ($msg){
     case 'createOk':
