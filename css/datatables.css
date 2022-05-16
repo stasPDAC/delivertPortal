@@ -41,7 +41,7 @@ table.dataTable tbody tr:last-child > td:last-child{
 
 table{
   border-radius: 10px;
-  /*overflow: hidden;*/
+  /*overflow: auto;*/
   box-shadow: 0 3px 10px #00000016;
 }
 th{
@@ -351,7 +351,7 @@ table.dataTable td {
   clear: both;
   *zoom: 1;
   zoom: 1;
-  /*overflow-x: auto;*/
+  overflow-x: auto;
 }
 .dataTables_wrapper .dataTables_length {
   float: left;

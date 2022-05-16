@@ -47,21 +47,21 @@ include_once 'includes/head.php';
             <input type="hidden" name="action" value="submit">
 
             <label for="name">*שם מלא</label>
-            <input type="text" id="name" name="name" placeholder="הזן שם מלא" required
+            <input type="text" id="name" name="name" placeholder="הזן שם מלא" value="<?= isset($name) ? $name : '' ?>" required
                    oninvalid="this.setCustomValidity('אנא הזן שם מלא')" oninput="this.setCustomValidity('')">
 
             <label for="phone">*מספר נייד</label>
-            <input type="tel" id="phone" name="phone" placeholder="הזן נייד" required
+            <input class="input_ltr" type="tel" id="phone" name="phone" placeholder="הזן נייד" value="<?= isset($phone) ? $phone : '' ?>" pattern="^[0-9\-\+]{9,15}$" required
                    oninvalid="this.setCustomValidity('אנא הזן מספר נייד תקני')" oninput="this.setCustomValidity('')">
             <?= isset($msg_phone) ? '<p class="error">' . $msg_phone . '</p>' : '' ?>
 
             <label for="mail">*<?= $mail_title ?></label>
-            <input type="email" id="mail" name="mail" placeholder="הזן <?= $mail_title ?>" required
+            <input class="input_ltr" type="email" id="mail" name="mail" placeholder="הזן <?= $mail_title ?>" value="<?= isset($mail) ? $mail : '' ?>" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required
                    oninvalid="this.setCustomValidity('אנא הזן <?= $mail_title ?> תקני')" oninput="this.setCustomValidity('')">
             <?= isset($msg_mail) ? '<p class="error">' . $msg_mail . '</p>' : '' ?>
 
             <label for="msg">הערות</label>
-            <textarea id="msg" name="msg" placeholder="הזן הערות"></textarea>
+            <textarea id="msg" name="msg" placeholder="הזן הערות"><?= isset($msg) ? $msg : '' ?></textarea>
 
             <input class="btn btn_center" value="שלח" type="submit">
         </form>

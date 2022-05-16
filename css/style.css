@@ -882,11 +882,22 @@ td a:hover {
 }
 
 .td_link_hover {
-    position: relative;
+    /*position: relative;*/
     color: #BAC405;
     font-weight: bold;
     transition: .3s;
 }
+.td_link_hover:hover{
+    color: #E3E897;
+}
+/*.td_link_hover {*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    color: #BAC405;*/
+/*    font-weight: bold;*/
+/*    transition: .3s;*/
+/*}*/
 
 .td_link_hover:hover div {
     display: flex;
@@ -902,11 +913,19 @@ td a:hover {
     border-radius: 10px;
     background-color: white;
     padding: 10px 15px;
-    right: 30px;
+    /*right: 30px;*/
     bottom: 20px;
     position: absolute;
     max-width: 300px;
     z-index: 2;
+}
+.td_hover_list{
+    position: fixed;
+    top: 0;
+    /*right: 0;*/
+    height: fit-content;
+    width: fit-content;
+    transform: translateY(-50%);
 }
 .td_hover_list svg{
     height: 24px;

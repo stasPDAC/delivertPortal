@@ -144,7 +144,7 @@ function supportMail($name, $phone, $mail, $msg)
         "</div>";
 
         $subject = "פורטל דוחות מסירה";
-        $to = 'stas@pdactech.com, elian@pdactech.com';
+        $to = 'stas@pdactech.com';
         $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
         $headers .= "From: יצירת קשר <noreply@shikunbinui.com>" . "\r\n";
 

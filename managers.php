@@ -50,7 +50,7 @@ include_once 'includes/header.php';
                 <td><?= $manager['st_user_name'] != '' ? $manager['st_user_name'] : '<span class="td_empty">אין נתונים</span>' ?></td>
                 <td><?= $manager['st_phone_first'] != '' ? $manager['st_phone_first'] : '<span class="td_empty">אין נתונים</span>' ?></td>
                 <td><?= $manager['st_mail'] != '' ? $manager['st_mail'] : '<span class="td_empty">אין נתונים</span>' ?></td>
-                <td>
+                <td class="td_link">
                     <?php
                         $count = count(getAllProjectsById($manager['id']));
                         $projects = getAllProjectsById($manager['id']);

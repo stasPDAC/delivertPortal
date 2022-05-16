@@ -42,6 +42,29 @@ include_once 'includes/header.php';
         <?php endif ?>
     </div>
     <div class="line"></div>
+<!--    <style>-->
+<!--        .box {-->
+<!--            width: 400px;-->
+<!--            height: 250px;-->
+<!--            border: 2px solid darkblue;-->
+<!--            background-color: blue;-->
+<!--            color: white;-->
+<!--            font: 16px "Zilla", "Open Sans", "Helvetica", "Arial", sans-serif;-->
+<!--        }-->
+<!---->
+<!--    </style>-->
+<!--    <div class="box">-->
+<!--        <p>-->
+<!--            Move the mouse around in this box to watch its coordinates change.-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <code>pageX</code>: <span id="x">n/a</span>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <code>pageY</code>: <span id="y">n/a</span>-->
+<!--        </p>-->
+<!--    </div>-->
+
     <table id="projects_table" class="table table-striped">
         <thead>
         <tr>
@@ -115,7 +138,7 @@ include_once 'includes/header.php';
                     $contractors = getAllContractorByProjectId($project['project_id']);
                     if ($count > 0) {
                         echo '<div class="td_link_hover">' . $count . ' קבלנים';
-                        echo '<div class="td_hover_list">';
+                        echo '<div class="td_hover_list" id="td_hover_list_' . $project['project_id'] . '">';
                         foreach ($contractors as $contractor) {
                              $faults_for_report = getAllReportsFaultsByContractorsIdAndProjectId($contractor['i_contractor_id'], $project['project_id']);
                              $count_faults = count($faults_for_report);
