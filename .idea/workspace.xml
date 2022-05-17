@@ -4,18 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Implementing a support email and checking a promise on all pages">
+    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Mirror pop-up in tables">
+      <change afterPath="$PROJECT_DIR$/authentication.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/datatables.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/datatables.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/login_style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/login_style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/config.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/contractors.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/contractors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/managers.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/managers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/projects.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/managers.php" beforeDir="false" afterPath="$PROJECT_DIR$/managers.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects.php" beforeDir="false" afterPath="$PROJECT_DIR$/projects.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/support.php" beforeDir="false" afterPath="$PROJECT_DIR$/support.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +54,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ofer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BuilDealNew" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -155,6 +150,8 @@
       <workItem from="1652331947196" duration="853000" />
       <workItem from="1652595967162" duration="25155000" />
       <workItem from="1652683266906" duration="19430000" />
+      <workItem from="1652711451666" duration="64000" />
+      <workItem from="1652777553728" duration="12340000" />
     </task>
     <task id="LOCAL-00001" summary="Accessibility corrections from the report">
       <created>1640179381701</created>
@@ -247,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652628907749</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Mirror pop-up in tables">
+      <created>1652711470837</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1652711470837</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,6 +282,7 @@
     <MESSAGE value="upload main" />
     <MESSAGE value="upload excel clients" />
     <MESSAGE value="Implementing a support email and checking a promise on all pages" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing a support email and checking a promise on all pages" />
+    <MESSAGE value="Mirror pop-up in tables" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mirror pop-up in tables" />
   </component>
 </project>

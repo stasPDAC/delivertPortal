@@ -1,4 +1,5 @@
 <?php
+    date_default_timezone_set("Asia/Jerusalem");
 	session_start();
 	$dsn = "mysql:host=localhost;dbname=delivery_db_drp;charset=utf8";
 	$options = [

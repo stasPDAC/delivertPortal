@@ -56,73 +56,63 @@ if (isset($_COOKIE['remember_me'])) {
 $remember_me = '';
 $report_id = filter_input(INPUT_GET, 'report', FILTER_SANITIZE_NUMBER_INT);
 $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_SPECIAL_CHARS);
+
 if ($submit) {
     $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
-    $remember_me = filter_input(INPUT_POST, 'remember_me', FILTER_SANITIZE_SPECIAL_CHARS);
+}
+    if (isset($phone) && preg_match("/^[0-9\-\+]{9,15}$/", $phone)) {
+        if(!$report_id){
+            $query = 'SELECT id, st_phone_first, st_phone_second, i_type FROM tb_users WHERE i_active = 1 AND st_phone_first = :st_phone_first';
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':st_phone_first', $phone);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $stmt = null;
+        }else{
+            $query = 'SELECT id, st_phone_first FROM tb_users WHERE (st_phone_first = :st_phone_first OR st_phone_second = :st_phone_second OR st_phone_checker = :st_phone_checker) AND i_active = 1 AND i_type = 4 AND i_serial_number = :i_serial_number';
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':st_phone_first', $phone);
+            $stmt->bindParam(':st_phone_second', $phone);
+            $stmt->bindParam(':st_phone_checker', $phone);
+            $stmt->bindParam(':i_serial_number', $report_id);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $stmt = null;
+        }
+        if ($result) {
+            $user_id = $result['id'];
+            $otp_token = bin2hex(openssl_random_pseudo_bytes(32));
+            $otp_pass = rand(100000,999999);
+            try {
+                $stmt = $pdo->prepare('UPDATE tb_users SET
+                    OTP_token = :OTP_token,
+                    OTP_pass = :OTP_pass,
+                    OTP_date = NOW()
+                    WHERE id = :id'
+                );
 
-}
-if (!$report_id) {
-    if (isset($phone) && preg_match("/^[0-9\-\+]{9,15}$/", $phone)) {
-        $query = 'SELECT id, st_phone_first, st_phone_second, i_type FROM tb_users WHERE i_active = 1 AND st_phone_first = :st_phone_first';
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':st_phone_first', $phone);
-        $stmt->execute();
-        $result = $stmt->fetch();
-        $stmt = null;
-        if ($result) {
-            $_SESSION['user_id'] = $result['id'];
-            if ($remember_me) {
-                $remember_token = bin2hex(openssl_random_pseudo_bytes(16));
-                setRememberTokenToUser($remember_token, $result['id']);
-                setcookie('remember_me', $remember_token, time() + 60 * 60 * 12 * 180, '/');
-            }
-            if ($result['i_type'] == 1) {
-                header('location: projects.php');
-            } elseif ($result['i_type'] == 2 || $result['i_type'] == 5) {
-                $projects = getAllProjectsByManagerId($result['id']);
-                if (count($projects) > 1) {
-                    header('location: projects.php');
-                } else {
-                    header('location: reports.php?id=' . $projects['0']['project_id']);
+                $stmt->bindParam(':OTP_token', $otp_token);
+                $stmt->bindParam(':OTP_pass', $otp_pass);
+                $stmt->bindParam(':id', $user_id);
+                $stmt->execute();
+                $stmt = null;
+
+                $_SESSION['OTP_token'] = $otp_token;
+                $_SESSION['pass'] = $otp_pass;
+                if($report_id){
+                    header('Location: authentication.php?report=' . $report_id);
+                }else{
+                    header('Location: authentication.php');
                 }
-            } elseif ($result['i_type'] == 3) {
-                $projects = getAllProjectsByContractorIdForProjectsPage($result['id']);
-                if (count($projects) > 1) {
-                    header('location: projects.php');
-                } else {
-                    header('location: notes.php?id=' . $projects['0']['project_id']);
-                }
+                exit;
+            } catch (Exception $e) {
+
             }
-            exit();
         } else {
-            $msg = 'יש טעות במספר שהזנת';
+            $msg = 'מספר נייד לא קיים (פנה לתמיכה לצורך רישום)';
         }
     }
-} else {
-    if (isset($phone) && preg_match("/^[0-9\-\+]{9,15}$/", $phone)) {
-        $query = 'SELECT id, st_phone_first FROM tb_users WHERE (st_phone_first = :st_phone_first OR st_phone_second = :st_phone_second OR st_phone_checker = :st_phone_checker) AND i_active = 1 AND i_type = 4 AND i_serial_number = :i_serial_number';
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':st_phone_first', $phone);
-        $stmt->bindParam(':st_phone_second', $phone);
-        $stmt->bindParam(':st_phone_checker', $phone);
-        $stmt->bindParam(':i_serial_number', $report_id);
-        $stmt->execute();
-        $result = $stmt->fetch();
-        $stmt = null;
-        if ($result) {
-            $_SESSION['user_id'] = $result['id'];
-            if ($remember_me) {
-                $remember_token = bin2hex(openssl_random_pseudo_bytes(16));
-                setRememberTokenToUser($remember_token, $result['id']);
-                setcookie('remember_me', $remember_token, time() + 60 * 60 * 12 * 180, '/');
-            }
-            header('location: report.php?id=' . $report_id);
-            exit();
-        } else {
-            $msg = 'יש טעות במספר שהזנת';
-        }
-    }
-}
+
 session_destroy();
 ?>
 <!DOCTYPE html>
@@ -162,19 +152,13 @@ session_destroy();
 <?= isset($mail_msg) ? '<div class="msg" id="msg"><p>' . $mail_msg .'</p></div>' : '' ?>
 <div class="login">
     <a href="/"><img class="login__logo" src="svg/SolelBuilds_logo.svg" alt=""></a>
+<!--    <div class="line"></div>-->
     <p class="title">פורטל דוחות מסירה</p>
-    <p>הזנו מספר נייד לקבל סיסמה OTP</p>
+    <p>הזן מספר נייד לקבלת אימות OTP</p>
     <form action="" method="post">
         <input class="input_ltr" type="tel" name="phone" placeholder="מספר נייד"
                value="<?= isset($phone) ? $phone : '' ?>" pattern="^[0-9\-\+]{9,15}$" autocomplete="off" required
                oninvalid="this.setCustomValidity('אנא הזן מספר נייד תקני')" oninput="this.setCustomValidity('')">
-
-        <div class="remember_me">
-            <label for="remember_me" class="container" style="width: 100%">זכור אותי
-                <input type="checkbox" id="remember_me" name="remember_me" <?= $remember_me != '' ? 'checked' : '' ?>>
-                <span class="checkmark"></span>
-            </label>
-        </div>
 
         <?= isset($msg) ? '<p class="error">' . $msg . '</p>' : '' ?>
 

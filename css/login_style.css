@@ -38,7 +38,7 @@ body{
     border-radius: 10px;
 }
 .login__logo{
-    width: 300px;
+    width: 240px;
     display: block;
     margin: 0 auto 30px;
 }
@@ -247,7 +247,13 @@ p{
     justify-content: center;
     flex-direction: column;
 }
-
+.line{
+    width: 100%;
+    height: 1px;
+    background-color: #BAC405;
+    max-width: 300px;
+    margin: auto;
+}
 .msg p {
     text-align: center;
     background-color: white;

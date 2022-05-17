@@ -50,10 +50,10 @@ function sendMailToClient($User_name, $email, $serial_number)
                         </div>
                     </div>';
 
-        $subject = "Mail from shikunbinui site";
+        $subject = "הודעה אוטומטית מפורטל שיכון ובינוי";
         $to = $email;
         $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
-        $headers .= "From: shikunbinui web server <noreply@shikunbinui.com>" . "\r\n";
+        $headers .= "From: פורטל דוחות שיכון ובינוי <noreply@shikunbinui.com>" . "\r\n";
 
         if (mail($to, $subject, $html, $headers)) {
             return true;
@@ -91,10 +91,10 @@ function sendMail($User_name, $email)
                         </div>
                     </div>';
 
-        $subject = "Mail from shikunbinui site";
+        $subject = "הודעה אוטומטית מפורטל שיכון ובינוי";
         $to = $email;
         $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
-        $headers .= "From: shikunbinui web server <noreply@shikunbinui.com>" . "\r\n";
+        $headers .= "From: פורטל דוחות שיכון ובינוי <noreply@shikunbinui.com>" . "\r\n";
 
         if (mail($to, $subject, $html, $headers)) {
             return true;
@@ -144,7 +144,7 @@ function supportMail($name, $phone, $mail, $msg)
         "</div>";
 
         $subject = "פורטל דוחות מסירה";
-        $to = 'stas@pdactech.com';
+        $to = 'stas@pdactech.com, elian@pdactech.com';
         $headers = "Content-type: text/html; charset=utf-8" . "\r\n";
         $headers .= "From: יצירת קשר <noreply@shikunbinui.com>" . "\r\n";
 
@@ -1129,6 +1129,7 @@ function createNewClient($project_id, $user_name, $phone_first, $phone_second, $
     }
 }
 
+//* use in scv class *//
 function createNewClients($project_id, $user_name, $phone_first, $phone_second, $mail, $property_type, $property_number, $floor, $apartment, $type, $kitchen_name, $kitchen_number, $bathroom_name, $bathroom_number)
 {
     global $pdo;
@@ -1183,6 +1184,9 @@ function createNewClients($project_id, $user_name, $phone_first, $phone_second, 
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
+    }
+    if($mail != ''){
+        sendMailToClient($user_name, $mail, $serial_number);
     }
 }
 
