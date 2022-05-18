@@ -43,7 +43,7 @@ include_once 'includes/header.php';
     <form action="" method="post">
         <input type="hidden" name="action" value="confirm">
         <input type="hidden" name="serial_id" value="<?= $report_serial ?>">
-        <input class="btn btn_center" value="מסכים" type="submit">
+        <input style="margin-top: 30px" class="btn btn_center" value="מסכים" type="submit">
     </form>
 </div>
 

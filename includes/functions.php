@@ -27,8 +27,8 @@ function error404(){
 
 function sendMailToClient($User_name, $email, $serial_number)
 {
+    global $domain;
     if ($email) {
-        $domain = 'https://deliveryportal.pdactech.com/';
         $html = '<div dir="rtl" style="width: 100%; display: flex; justify-content: center; flex-direction: column">
                         <div style="width: 100%; max-width: 900px; padding: 30px; border-radius: 10px; margin: 20px auto">
                             <div>
@@ -68,8 +68,8 @@ function sendMailToClient($User_name, $email, $serial_number)
 function sendMail($User_name, $email)
 {
     if ($email) {
-        $domain = 'https://deliveryportal.pdactech.com/';
-        $html = '<div dir="rtl" style="width: 100%; display: flex; justify-content: center; flex-direction: column">
+        global $domain;
+            $html = '<div dir="rtl" style="width: 100%; display: flex; justify-content: center; flex-direction: column">
                         <div style="width: 100%; max-width: 900px; padding: 30px; border-radius: 10px; margin: 20px auto">
                             <div>
                                 <img style="height: 60px; display: block; margin: 17px auto" src="' . $domain . 'images/logo.png" alt="BUILDEAL">
@@ -154,6 +154,51 @@ function supportMail($name, $phone, $mail, $msg)
         } else {
             return false;
         }
+}
+
+function send_sms($phone,$message,$user_id){
+    global $pdo;
+    $sender_name = "ShikunBinui";
+    $fields = 'UserName=mor_a&EncryptPassword=7ee76857789b47c59a0f5137a947ba9b&Subscribers=' . $phone . '&Message=' . $message . '&SenderName=' . $sender_name . '&DeliveryDelayInMinutes=0&ExpirationDelayInMinutes=120&SendId=';
+
+//    $fields = urlencode($fields);
+
+    $params = [
+        "UserName"=>"mor_a",
+        "EncryptPassword"=>"7ee76857789b47c59a0f5137a947ba9b",
+        "Subscribers"=>$phone,
+        "Message"=>$message,
+        "SenderName"=>$sender_name,
+        "DeliveryDelayInMinutes"=>"0",
+        "ExpirationDelayInMinutes"=>"120",
+        "SendId"=>"",
+    ];
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://simplesms.co.il/webservice/SmsWS.asmx/SendSms',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $fields,
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/x-www-form-urlencoded'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+    $sql = "INSERT INTO tb_sms_logs (i_user_id_serial, st_log, date_created) VALUES ( ?, ?, NOW())";
+    $params = [$user_id, $response];
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+//    echo $response;
 }
 
 /////////////////////////////////// SELECT ///////////////////////////////////
@@ -1062,6 +1107,7 @@ function createNewProject($project_name, $project_manager, $project_address, $da
 function createNewClient($project_id, $user_name, $phone_first, $phone_second, $mail, $property_type, $property_number, $floor, $apartment, $type, $kitchen_name, $kitchen_number, $bathroom_name, $bathroom_number)
 {
     global $pdo;
+    global $domain;
     global $user_id;
     $serial_number = getLastSerialNumber();
     $sql = "INSERT INTO tb_users (
@@ -1117,6 +1163,13 @@ function createNewClient($project_id, $user_name, $phone_first, $phone_second, $
             if($mail != ''){
                 sendMailToClient($user_name, $mail, $serial_number);
             }
+            $message = $user_name . ' שלום רב,';
+            $message .= 'לכניסה לפורטל דוחות מסירה יש ללחוץ על הקישור הבא:';
+            $message .= $domain . '?report=' . $serial_number;
+            if($phone_second != ''){
+                $phone_first = $phone_first . ',' . $phone_second;
+            }
+            send_sms($phone_first,$message,$serial_number);
             header('Location: project.php?id=' . $project_id . '&msg=createOk');
             exit;
         } else {
@@ -1694,9 +1747,10 @@ function updateProjectById($project_name, $project_manager, $project_address, $d
     }
 }
 
-function updatePerformingTheTest($body_text, $name, $phone, $report_serial)
+function updatePerformingTheTest($body_text, $name, $phone, $report_serial, $client_name)
 {
     global $pdo;
+    global $domain;
     try {
         $stmt = $pdo->prepare('UPDATE tb_reports SET
         st_checker = :st_checker,
@@ -1719,6 +1773,13 @@ function updatePerformingTheTest($body_text, $name, $phone, $report_serial)
         $stmt->bindParam(':i_serial_number', $report_serial);
         $stmt->execute();
         $stmt = null;
+
+        $message = $name . ' שלום רב,';
+        $message .= ' לבקשת ' . $client_name . ', פרטיך נוספו כבודק בפורטל דוחות מסירה של שיכון ובינוי.';
+        $message .= ' לכניסה לפורטל יש ללחוץ על הקישור הבא:';
+        $message .= $domain . '?report=' . $report_serial;
+
+        send_sms($phone,$message,$report_serial);
 
         header('Location: report.php?id=' . $report_serial . '&msg=editOk');
         exit;
@@ -1757,7 +1818,7 @@ function updateReportBySerialNumber($report_serial, $status)
     }
 }
 
-function uploudPdfFile($pdf_name_file, $report_serial)
+function uploadPdfFile($pdf_name_file, $report_serial)
 {
     global $pdo;
     try {
@@ -1772,15 +1833,26 @@ function uploudPdfFile($pdf_name_file, $report_serial)
     }
 }
 
-function updateReportStatusBySerialNumber($report_serial, $status)
+function updateReportStatusBySerialNumber($report_serial, $status, $name, $phone, $client_phone_second)
 {
     global $pdo;
+    global $domain;
     try {
         $stmt = $pdo->prepare('UPDATE tb_reports SET i_status = :i_status WHERE i_serial_number = :i_serial_number');
         $stmt->bindParam(':i_status', $status);
         $stmt->bindParam(':i_serial_number', $report_serial);
         $stmt->execute();
         $stmt = null;
+
+        $message = $name . ' שלום רב,';
+        $message .= 'דוח מספר ' . $report_serial . ' עבר בקרת איכות בהצלחה.';
+        $message .= ' שיכון ובינוי מברכת אותך על רכישת הדירה ורוצה לאחל לך בהצלחה, המפתח בדלת:)';
+        $message .= $domain . '?report=' . $report_serial;
+        if($client_phone_second != ''){
+            $phone = $phone . ',' . $client_phone_second;
+        }
+
+        send_sms($phone,$message,$report_serial);
 
         header('Location: report.php?id=' . $report_serial . '&msg=editOk');
         exit;

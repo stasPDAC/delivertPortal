@@ -20,6 +20,7 @@ if($project_id){
 $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
 if ($action) {
     $user_name = filter_input(INPUT_POST, 'user_name', FILTER_SANITIZE_SPECIAL_CHARS);
+//    $user_name = htmlentities($user_name);
     if(!$user_name){
         $msg_user_name = 'חובה להזין שם דייר';
         $user_name_check = false;

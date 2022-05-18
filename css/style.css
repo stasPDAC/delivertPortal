@@ -51,6 +51,7 @@ a:focus, a:active{
 .pre{
     width: 100%;
     line-height: normal;
+    white-space: pre-wrap;
 }
 .pre img{
     display: inline-block;
@@ -773,6 +774,7 @@ tr .notes_item__color{
     /*max-width: fit-content;*/
     white-space: nowrap;
     height: 40px;
+    cursor: pointer;
 }
 
 .btn_header svg {
@@ -827,7 +829,11 @@ input.btn, button.btn {
 .btn:hover {
     opacity: .6;
 }
-
+.finish_btn{
+    opacity: .4;
+    user-select: none;
+    pointer-events: none;
+}
 .td_link {
     cursor: pointer;
 }
@@ -1008,7 +1014,7 @@ p.middle_title {
     margin: auto;
     width: calc(100% - 40px);
     max-width: 600px;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 100px);
     overflow-y: auto;
     height: auto;
     position: relative;

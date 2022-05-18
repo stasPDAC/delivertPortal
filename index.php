@@ -99,6 +99,10 @@ if ($submit) {
 
                 $_SESSION['OTP_token'] = $otp_token;
                 $_SESSION['pass'] = $otp_pass;
+
+//                $message = $otp_pass . ' הוא קוד האימות החד-פעמי שלך, והוא בתוקף ל-5 הדקות הקרובות. צוות שיכון ובינוי';
+//                $sms_log = send_sms($phone,$message,$user_id);
+
                 if($report_id){
                     header('Location: authentication.php?report=' . $report_id);
                 }else{

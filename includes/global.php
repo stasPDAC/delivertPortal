@@ -13,6 +13,7 @@
         $user_type = $user_conn['i_type'];
         $user_name_connect = $user_conn['st_user_name'];
         $date_terms_confirmed = $user_conn['date_terms_confirmed'];
+        $domain = 'https://deliveryportal.pdactech.com/';
     } else {
         header('location: /');
         exit();

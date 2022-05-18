@@ -4,6 +4,7 @@ include_once 'includes/global.php';
 $page = 'projects';
 global $icons;
 global $user_type;
+global $domain;
 if($user_type != 1 && $user_type != 2 && $user_type != 5){
     error404();
 }
@@ -21,6 +22,12 @@ switch ($msg){
     case 'error':
         $msg = 'משהו השתבש נסו שוב מאוחר יותר';
         break;
+    case 'mail':
+        $msg = 'המייל נשלח בהצלחה';
+        break;
+    case 'sms':
+        $msg = 'הסמס נשלח בהצחה';
+        break;
     default;
 }
 
@@ -36,7 +43,38 @@ if($project_id){
     header('Location: /');
     exit;
 }
+$sms = filter_input(INPUT_GET, 'sms', FILTER_SANITIZE_SPECIAL_CHARS);
+if($sms){
+    $clinet = getClientById($sms);
+    $user_name = $clinet['st_user_name'];
+    $phone_first = $clinet['st_phone_first'];
+    $phone_second = $clinet['st_phone_second'];
+    $serial_number = $clinet['i_serial_number'];
+    $message = $user_name . ' שלום רב,';
+    $message .= 'לכניסה לפורטל דוחות מסירה יש ללחוץ על הקישור הבא:';
+    $message .= $domain . '?report=' . $serial_number;
+    if($phone_second != ''){
+        $phone_first = $phone_first . ',' . $phone_second;
+    }
+    send_sms($phone_first,$message,$serial_number);
 
+    header('Location: project.php?id=' . $project_id . '&msg=sms');
+    exit;
+}
+$mail = filter_input(INPUT_GET, 'mail', FILTER_SANITIZE_SPECIAL_CHARS);
+if($mail){
+    $clinet = getClientById($mail);
+    $user_name = $clinet['st_user_name'];
+    $email = $clinet['st_mail'];
+    $phone_first = $clinet['st_phone_first'];
+    $phone_second = $clinet['st_phone_second'];
+    $serial_number = $clinet['i_serial_number'];
+
+    sendMailToClient($user_name, $email, $serial_number);
+
+    header('Location: project.php?id=' . $project_id . '&msg=mail');
+    exit;
+}
 include_once 'includes/head.php';
 include_once 'includes/header.php';
 ?>
@@ -118,6 +156,8 @@ include_once 'includes/header.php';
                 <td class="actions">
                     <?php if($user_type == 1) : ?>
                         <a title="עריכת דייר" href="clientEditor.php?edit=<?= $clients['id'] ?>"><?= $icons['edit'] ?></a>
+                        <a title="שלח מייל לדייר" href="project.php?id=<?=$project_id?>&mail=<?= $clients['id'] ?>"><?= $icons['mail'] ?></a>
+                        <a title="שלח סמס לדייר" href="project.php?id=<?=$project_id?>&sms=<?= $clients['id'] ?>"><?= $icons['sms'] ?></a>
                     <?php endif ?>
                     <a title="קישור לדוח" href="report.php?id=<?= $clients['i_serial_number'] ?>"><?= $icons['report'] ?></a>
                 </td>

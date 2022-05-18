@@ -46,6 +46,8 @@ if ($action) {
     $dateTest = filter_input(INPUT_POST, 'dateTest', FILTER_SANITIZE_SPECIAL_CHARS);
 
     $report_serial = filter_input(INPUT_POST, 'report_serial', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    $active = filter_input(INPUT_POST, 'active', FILTER_SANITIZE_SPECIAL_CHARS) ? 1 : 0;
 }
 switch ($action) {
     case 'upload_pdf':
@@ -58,7 +60,7 @@ switch ($action) {
         $file_type = $_FILES['file']['type'];
         if ($file_type == "application/pdf") {
             if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFolder)) {
-                uploudPdfFile($newFileName, $report_serial);
+                uploadPdfFile($newFileName, $report_serial);
                 echo "The file " . basename($_FILES['file']['name']) . " is uploaded";
                 header('Location: report.php?id=' . $report_serial . '&msg=pdfOk');
                 exit();
@@ -72,14 +74,16 @@ switch ($action) {
             exit();
         }
 
-        uploudPdfFile();
+        uploadPdfFile();
         break;
     case 'performing_the_test':
         updatePerformingTheTest($body_text, $dateTest, $report_serial);
         break;
     case 'finish':
         $status = 2;
-        updateReportBySerialNumber($report_serial, $status);
+        if ($active == 1){
+            updateReportBySerialNumber($report_serial, $status);
+        }
         break;
     case 'first_time':
         setcookie('first_time', 'good cookie', time() + 60 * 60 * 12 * 180, '/');
@@ -93,9 +97,12 @@ if (!$report_serial) {
 if ($report_serial) {
     $phone_checker = getPhoneCheckerBySerialId($report_serial);
     $client = getClientBySerialId($report_serial);
-//    if(!$client){
-//        error404();
-//    }
+    $client_name = $client['st_user_name'];
+    $client_phone_first = $client['st_phone_first'];
+    $client_phone_second = $client['st_phone_second'];
+    if(!$client){
+        error404();
+    }
     $faults = getAllFaultsBySerialId($report_serial);
     $current_category = 0;
     $project = getProjectByProjectId($client['project_id']);
@@ -108,7 +115,7 @@ if ($report_serial) {
         }
         if ($status_check_count == count($faults) && $status_check_count != 0) {
             $status = 3;
-            updateReportStatusBySerialNumber($report_serial, $status);
+            updateReportStatusBySerialNumber($report_serial, $status, $client_name, $client_phone_first, $client_phone_second);
         }
     }
 }
@@ -141,8 +148,7 @@ include_once 'includes/header.php';
     </div>
 </div>
 
-<div id="welcome"
-     class="modal" <?= $user_type == 4 && $client['i_status'] == 1 && !isset($_COOKIE['first_time']) ? 'style="display:flex"' : '' ?>>
+<div id="welcome" class="modal" <?= $user_type == 4 && $client['i_status'] == 1 && !isset($_COOKIE['first_time']) ? 'style="display:flex"' : '' ?>>
     <div class="modal-content">
         <div id="view_1"
              class="views" <?= $user_type == 4 && $client['i_status'] == 1 && !isset($_COOKIE['first_time']) ? 'style="display:block"' : '' ?>>
@@ -163,6 +169,26 @@ include_once 'includes/header.php';
             <br>
             <a id="step_3" class="btn btn_center">סגור</a>
         </div>
+    </div>
+</div>
+
+<div id="reportCompletion" class="modal">
+    <div class="modal-content">
+        <span class="close"><?= $icons['close'] ?></span>
+        <p class="container__title">דייר יקר שים לב!</p>
+        <pre class="pre">פעולת הגשת הדוח היא פעולה סופית.
+לא ניתן לחזור לערוך או להגיש דוח נוסף.
+במידה ולא תגיש את הדוח, פרטי התקלות שרשמת ישמרו בצורה אוטומטית.
+שים לב כי רק לאחר הגשת הדוח הוא יועבר לבדיקת הקבלן ולטיפול.</pre>
+        <form action="" method="post">
+            <input type="hidden" name="action" value="finish">
+            <input type="hidden" name="report_serial" value="<?= $report_serial ?>">
+            <label for="active" class="container" style="width: 100%; position: relative; padding-right: 40px; cursor: pointer">אני מאשר את ביצוע הפעולה הסופית.
+                <input type="checkbox" id="active" name="active"  onchange="myFunctionFinish()">
+                <span class="checkmark"></span>
+            </label>
+            <button id="finish_btn" class="btn btn_center finish_btn" type="submit" onclick="if (!confirm('לאחר סיום לא יהיה ניתן לערוך את הדוח')) return false;">סיום דוח</button>
+        </form>
     </div>
 </div>
 
@@ -197,13 +223,15 @@ include_once 'includes/header.php';
                         </div>
                     </form>
 
-                    <form action="" method="post">
-                        <input type="hidden" name="action" value="finish">
-                        <input type="hidden" name="report_serial" value="<?= $report_serial ?>">
-                        <button class="btn" type="submit"
-                                onclick="if (!confirm('לאחר סיום לא יהיה ניתן לערוך את הדוח')) return false;">סיום דוח
-                        </button>
-                    </form>
+                    <a id="reportCompletionBtn" class="btn">סיום דוח</a>
+
+<!--                    <form action="" method="post">-->
+<!--                        <input type="hidden" name="action" value="finish">-->
+<!--                        <input type="hidden" name="report_serial" value="--><?//= $report_serial ?><!--">-->
+<!--                        <button class="btn" type="submit"-->
+<!--                                onclick="if (!confirm('לאחר סיום לא יהיה ניתן לערוך את הדוח')) return false;">סיום דוח-->
+<!--                        </button>-->
+<!--                    </form>-->
                 <?php endif; ?>
 
 
@@ -370,5 +398,18 @@ include_once 'includes/header.php';
 
 
 </div>
-<script src="js/report.js?var=2"></script>
+<script>
+    function myFunctionFinish() {
+        if(document.getElementById("active").checked){
+            document.getElementById("finish_btn").style.opacity = "1";
+            document.getElementById("finish_btn").style.userSelect = "inherit";
+            document.getElementById("finish_btn").style.pointerEvents  = "inherit";
+        }else{
+            document.getElementById("finish_btn").style.opacity = "0.4";
+            document.getElementById("finish_btn").style.userSelect = "none";
+            document.getElementById("finish_btn").style.pointerEvents  = "none";
+        }
+    }
+</script>
+<script src="js/report.js"></script>
 <?php include_once 'includes/footer.php'; ?>

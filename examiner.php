@@ -9,6 +9,7 @@ $report_serial = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 if($report_serial){
     $report = getReportBySerialId($report_serial);
     $phone_checker = getPhoneCheckerBySerialId($report_serial);
+    $client = getClientBySerialId($report_serial);
 }else{
     error404();
 }
@@ -19,6 +20,8 @@ if($action){
         $body_text = html_entity_decode($body_text);
     }
 
+    $client_name = $client['st_user_name'];
+
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
 
     $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -28,7 +31,7 @@ if($action){
 
 switch ($action) {
     case 'performing_the_test':
-        updatePerformingTheTest($body_text, $name, $phone, $report_serial);
+        updatePerformingTheTest($body_text, $name, $phone, $report_serial, $client_name);
         break;
     default;
 }
@@ -49,11 +52,11 @@ include_once 'includes/header.php';
             <input type="hidden" name="report_serial" value="<?= $report_serial ?>">
 
             <label for="name">שם של הבודק</label>
-            <input type="text" name="name" id="name" placeholder="הזן כותרת" value="<?= htmlentities($report['st_name_checker']) ?>" required
-                   oninvalid="this.setCustomValidity('אנא הזן את שם הדייר')" oninput="this.setCustomValidity('')">
+            <input type="text" name="name" id="name" placeholder="הזן שם" value="<?= htmlentities($report['st_name_checker']) ?>" required
+                   oninvalid="this.setCustomValidity('אנא הזן את שם הבודק')" oninput="this.setCustomValidity('')">
 
             <label for="phone">מספר נייד של בודק</label>
-            <input class="input_ltr" type="tel" name="phone" id="phone" placeholder="הזן כותרת" value="<?= $phone_checker['st_phone_checker'] ?>" pattern="^[0-9\-\+]{9,15}$" required
+            <input class="input_ltr" type="tel" name="phone" id="phone" placeholder="הזן נייד" value="<?= $phone_checker['st_phone_checker'] ?>" pattern="^[0-9\-\+]{9,15}$" required
                    oninvalid="this.setCustomValidity('אנא הזן את מספר הנייד')" oninput="this.setCustomValidity('')">
 
             <label for="articleBodyEditor">פרטים</label>

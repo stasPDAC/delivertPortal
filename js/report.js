@@ -70,4 +70,25 @@ $(document).ready(function () {
         document.getElementById("view_2").style.display = "none";
         document.getElementById("view_3").style.display = "block";
     }
+
+    const reportCompletion = document.getElementById("reportCompletion");
+    const reportCompletionBtn = document.getElementById("reportCompletionBtn");
+    const reportCompletionClose = document.getElementsByClassName("close")[1];
+    // if(reportCompletionBtn){
+        reportCompletionBtn.onclick = function() {
+            reportCompletion.style.display = "flex";
+        }
+    // }
+
+    reportCompletionClose.onclick = function() {
+        reportCompletion.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == reportCompletion) {
+            reportCompletion.style.display = "none";
+        }
+    }
+
+
 })

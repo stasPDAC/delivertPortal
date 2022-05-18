@@ -25,6 +25,7 @@ if (isset($pass)) {
         if(strtotime($result['OTP_date']) + (5 * 60) > time()){
 
             $_SESSION['user_id'] = $result['id'];
+
             if ($remember_me) {
                 $remember_token = bin2hex(openssl_random_pseudo_bytes(16));
                 setRememberTokenToUser($remember_token, $result['id']);
@@ -96,10 +97,8 @@ if (isset($pass)) {
             onclick="location.href='/accessibility'"><?= $icons['info'] ?></button>
 </div>
 <p><b><?=$_SESSION['pass']?></b> הוא קוד האימות החד-פעמי שלך, והוא בתוקף ל-5 הדקות הקרובות. צוות שיכון ובינוי</p>
-<?//= isset($mail_msg) ? '<div class="msg" id="msg"><p>' . $mail_msg .'</p></div>' : '' ?>
 <div class="login">
     <a href="/"><img class="login__logo" src="svg/SolelBuilds_logo.svg" alt=""></a>
-<!--    <div class="line"></div>-->
     <p class="title">פורטל דוחות מסירה</p>
     <p>הזן את הקוד שנשלח זה עתה לנייד שלך</p>
     <form action="" method="post">
@@ -126,14 +125,7 @@ if (isset($pass)) {
         <?php endif; ?>
     </form>
 </div>
-<!--<script>-->
-<!--    setTimeout(() => {-->
-<!--    const box = document.getElementById('msg')-->
-<!--    if(box){-->
-<!--    box.style.display = 'none';-->
-<!--    }-->
-<!--    }, 2000);-->
-<!--</script>-->
-<script src="../js/head.js"></script>
+
+<script src="js/head.js"></script>
 </body>
 </html>
