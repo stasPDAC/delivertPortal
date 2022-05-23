@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Sending login messages to the system">
+    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Adding messages while logging in to the site">
+      <change afterPath="$PROJECT_DIR$/contractor.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication.php" beforeDir="false" afterPath="$PROJECT_DIR$/authentication.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clientEditor.php" beforeDir="false" afterPath="$PROJECT_DIR$/clientEditor.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examiner.php" beforeDir="false" afterPath="$PROJECT_DIR$/examiner.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/global.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/global.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/icons.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/icons.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/header.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/report.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.php" beforeDir="false" afterPath="$PROJECT_DIR$/project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects.php" beforeDir="false" afterPath="$PROJECT_DIR$/projects.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/report.php" beforeDir="false" afterPath="$PROJECT_DIR$/report.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terms.php" beforeDir="false" afterPath="$PROJECT_DIR$/terms.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +56,7 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BuilDealNew" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -159,7 +154,10 @@
       <workItem from="1652683266906" duration="19430000" />
       <workItem from="1652711451666" duration="64000" />
       <workItem from="1652777553728" duration="12959000" />
-      <workItem from="1652860887214" duration="20544000" />
+      <workItem from="1652860887214" duration="20717000" />
+      <workItem from="1653208805941" duration="206000" />
+      <workItem from="1653220997590" duration="1106000" />
+      <workItem from="1653283644867" duration="8380000" />
     </task>
     <task id="LOCAL-00001" summary="Accessibility corrections from the report">
       <created>1640179381701</created>
@@ -266,7 +264,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652799325208</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Adding messages while logging in to the site">
+      <created>1652886541251</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1652886541251</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -299,6 +304,7 @@
     <MESSAGE value="Implementing a support email and checking a promise on all pages" />
     <MESSAGE value="Mirror pop-up in tables" />
     <MESSAGE value="Sending login messages to the system" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sending login messages to the system" />
+    <MESSAGE value="Adding messages while logging in to the site" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding messages while logging in to the site" />
   </component>
 </project>

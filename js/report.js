@@ -4,7 +4,7 @@ $(document).ready(function () {
         if(box){
             box.style.display = 'none';
         }
-    }, 2000);
+    }, 2500);
     tinymce.init({
         selector: '#articleBodyEditor',
         language: 'he_IL',

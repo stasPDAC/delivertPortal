@@ -961,12 +961,13 @@ p.middle_title {
 .msg {
     background-color: rgba(0, 0, 0, 0.39);
     width: 100%;
-    height: calc(100vh - 80px);
+    height: 100vh;
     position: fixed;
     z-index: 100;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    top: 0;
 }
 
 .msg p {
@@ -979,6 +980,7 @@ p.middle_title {
     font-weight: bold;
     font-size: 1.2em;
     margin: auto;
+    line-height: normal;
 }
 
 /* END PAGE VIEW */
@@ -1211,7 +1213,7 @@ p.middle_title {
     }
 
     .fault_title {
-        padding: 30px 40px 20px;
+        padding: 40px 40px 20px;
     }
     .accordion{
         padding: 20px 40px;

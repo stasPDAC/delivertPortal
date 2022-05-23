@@ -144,7 +144,8 @@ include_once 'includes/header.php';
                              $count_faults = count($faults_for_report);
 
                             if($user_type < 3 && $count_faults != 0){
-                                echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span><a href="pdf_faultReport.php?id=' . $project['project_id'] . '&u=' . $contractor['i_contractor_id'] . '" target="_blank" title="דוח תקלות לקבלן">' . $icons['upload_pdf'] . '</a></p>';
+//                                echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span><a href="pdf_faultReport.php?id=' . $project['project_id'] . '&u=' . $contractor['i_contractor_id'] . '" target="_blank" title="דוח תקלות לקבלן">' . $icons['upload_pdf'] . '</a></p>';
+                                echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span><a href="contractor.php?id=' . $project['project_id'] . '&u=' . $contractor['i_contractor_id'] . '" title="דוח תקלות לקבלן">' . $icons['note'] . '</a></p>';
                             }else{
                                 echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span></p>';
                             }

@@ -1810,7 +1810,7 @@ function updateReportBySerialNumber($report_serial, $status)
         $stmt = null;
 
 
-        header('Location: report.php?id=' . $report_serial . '&msg=editOk');
+        header('Location: report.php?id=' . $report_serial . '&msg=finish');
         exit;
     } catch (Exception $e) {
         header('Location: report.php?id=' . $report_serial . '&msg=error');

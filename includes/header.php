@@ -44,14 +44,14 @@
         </nav>
     </div>
     <div class="header__name">
-        <p>שלום: <span class="bold"><?=strtok($user_name_connect, " ");?></span></p>
+        <p>שלום: <span class="bold"><?=$user_name_connect;?></span></p>
     </div>
     <button aria-expanded="false" aria-label="לחץ לפתיחת תפריט" class="icon">
         <div class="burger"></div>
     </button>
         <div class="menu_mobile">
             <nav>
-                <p>שלום: <span class="bold"><?=strtok($user_name_connect, " ");?></span></p>
+                <p>שלום: <span class="bold"><?=$user_name_connect;?></span></p>
                 <div class="line"></div>
                 <?php if($user_type != 4) : ?>
                         <a <?= $page == 'projects' ? 'class="bold"' : ''?> href="../projects.php">פרוייקטים</a>
