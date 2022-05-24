@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Adding messages while logging in to the site">
-      <change afterPath="$PROJECT_DIR$/contractor.php" afterDir="false" />
+    <list default="true" id="cd501bd6-69ce-4120-b97a-a8855d67026e" name="Changes" comment="Implementing a message after completing a project Adding a task page to the contractor">
+      <change afterPath="$PROJECT_DIR$/test.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fault.php" beforeDir="false" afterPath="$PROJECT_DIR$/fault.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/functions.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/functions.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/report.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects.php" beforeDir="false" afterPath="$PROJECT_DIR$/projects.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/report.php" beforeDir="false" afterPath="$PROJECT_DIR$/report.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/reports.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/reports.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +154,11 @@
       <workItem from="1652860887214" duration="20717000" />
       <workItem from="1653208805941" duration="206000" />
       <workItem from="1653220997590" duration="1106000" />
-      <workItem from="1653283644867" duration="8380000" />
+      <workItem from="1653283644867" duration="13252000" />
+      <workItem from="1653312712591" duration="14000" />
+      <workItem from="1653314331303" duration="1843000" />
+      <workItem from="1653317063324" duration="141000" />
+      <workItem from="1653374019920" duration="6396000" />
     </task>
     <task id="LOCAL-00001" summary="Accessibility corrections from the report">
       <created>1640179381701</created>
@@ -271,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652886541251</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Implementing a message after completing a project Adding a task page to the contractor">
+      <created>1653293381221</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653293381221</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,6 +313,18 @@
     <MESSAGE value="Mirror pop-up in tables" />
     <MESSAGE value="Sending login messages to the system" />
     <MESSAGE value="Adding messages while logging in to the site" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding messages while logging in to the site" />
+    <MESSAGE value="Implementing a message after completing a project Adding a task page to the contractor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing a message after completing a project Adding a task page to the contractor" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/includes/functions.php</url>
+          <line>1319</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

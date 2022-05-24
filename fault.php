@@ -88,5 +88,6 @@ include_once 'includes/header.php';
         </form>
     </div>
 </div>
-<script src="js/reports.js?var=9"></script>
+<canvas id="resizingCanvas" style="display: none" height="1024" width="1024"></canvas>
+<script src="js/reports.js?var=14"></script>
 <?php include_once 'includes/footer.php'; ?>

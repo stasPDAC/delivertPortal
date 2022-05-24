@@ -191,12 +191,14 @@ function send_sms($phone,$message,$user_id){
 
     $response = curl_exec($curl);
 
+    if($response){
+        $sql = "INSERT INTO tb_sms_logs (i_user_id_serial, st_log, date_created) VALUES ( ?, ?, NOW())";
+        $params = [$user_id, $response];
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+    }
     curl_close($curl);
 
-    $sql = "INSERT INTO tb_sms_logs (i_user_id_serial, st_log, date_created) VALUES ( ?, ?, NOW())";
-    $params = [$user_id, $response];
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
 
 //    echo $response;
 }
@@ -1247,6 +1249,7 @@ function createNewAdmin($user_name, $phone_first, $mail, $type)
 {
     global $pdo;
     global $user_id;
+    global $domain;
 
     $sql = "INSERT INTO tb_users (
             st_user_name,
@@ -1267,6 +1270,13 @@ function createNewAdmin($user_name, $phone_first, $mail, $type)
         if($mail != ''){
             sendMail($user_name, $mail);
         }
+        $serial_number = 0;
+        $message = $user_name . ' שלום רב,';
+        $message .= ' צורפת לפורטל דוחות ומסירה של שיכון ובינוי בתור מנהל מערכת';
+        $message .= ', לכניסה יש ללחוץ על הקישור הבא:';
+        $message .= $domain;
+
+        send_sms($phone_first,$message,$serial_number);
         header('Location: users.php?msg=createOk');
         exit;
     } else {
@@ -1279,6 +1289,7 @@ function createNewInspector($user_name, $phone_first, $mail, $type)
 {
     global $pdo;
     global $user_id;
+    global $domain;
     $sql = "INSERT INTO tb_users (
                 st_user_name,
                 st_phone_first,
@@ -1298,6 +1309,13 @@ function createNewInspector($user_name, $phone_first, $mail, $type)
         if($mail != ''){
             sendMail($user_name, $mail);
         }
+        $serial_number = 0;
+        $message = $user_name . ' שלום רב,';
+        $message .= ' צורפת לפורטל דוחות ומסירה של שיכון ובינוי בתור מבקר איכות';
+        $message .= ', לכניסה יש ללחוץ על הקישור הבא:';
+        $message .= $domain;
+        send_sms($phone_first,$message,$serial_number);
+
         header('Location: inspectors.php?msg=createOk');
         exit;
     } else {
@@ -1310,6 +1328,7 @@ function createNewManager($user_name, $phone_first, $mail, $type)
 {
     global $pdo;
     global $user_id;
+    global $domain;
     $sql = "INSERT INTO tb_users (
                 st_user_name,
                 st_phone_first,
@@ -1329,6 +1348,12 @@ function createNewManager($user_name, $phone_first, $mail, $type)
         if($mail != ''){
             sendMail($user_name, $mail);
         }
+        $serial_number = 0;
+        $message = $user_name . ' שלום רב,';
+        $message .= ' צורפת לפורטל דוחות ומסירה של שיכון ובינוי בתור מנהל פרויקטים';
+        $message .= ', לכניסה יש ללחוץ על הקישור הבא:';
+        $message .= $domain;
+        send_sms($phone_first,$message,$serial_number);
         header('Location: managers.php?msg=createOk');
         exit;
     } else {
@@ -1341,6 +1366,7 @@ function createNewContractor($user_name, $phone_first, $mail, $type, $checkboxes
 {
     global $pdo;
     global $user_id;
+    global $domain;
     $sql = "INSERT INTO tb_users (
                 st_user_name,
                 st_phone_first,
@@ -1371,6 +1397,13 @@ function createNewContractor($user_name, $phone_first, $mail, $type, $checkboxes
             if($mail != ''){
                 sendMail($user_name, $mail);
             }
+            $serial_number = 0;
+            $message = $user_name . ' שלום רב,';
+            $message .= ' צורפת לפורטל דוחות ומסירה של שיכון ובינוי בתור קבלן ביצוע';
+            $message .= ', לכניסה יש ללחוץ על הקישור הבא:';
+            $message .= $domain;
+            send_sms($phone_first,$message,$serial_number);
+
             header('Location: contractors.php?msg=createOk');
             exit;
         }
@@ -1391,9 +1424,11 @@ function createNewFault($body_text, $category, $title, $report_serial)
 
     if ($stmt->rowCount() > 0) {
         header('Location: report.php?id=' . $report_serial . '&msg=createOk');
+//        header('Location: test.php?status=ok');
         exit;
     } else {
         header('Location: report.php?id=' . $report_serial . '&msg=error');
+//        header('Location: test.php?status=error');
         exit;
     }
 }
