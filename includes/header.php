@@ -32,7 +32,7 @@
                     <a <?= $page == 'notes' ? 'class="bold"' : ''?> href="../notes.php">תקלות</a>
                     <span>|</span>
                 <?php endif ?>
-                    <a href="/?logOut=logOut">יציאה</a>
+                <a href="/?logOut=logOut&report=<?=$report_serial?>">יציאה</a>
 
 
 
@@ -71,10 +71,10 @@
                     <?php if($user_type == 3) : ?>
                         <a <?= $page == 'notes' ? 'class="bold"' : ''?> href="../notes.php">תקלות</a>
                     <?php endif ?>
-                    <a href="/">יציאה</a>
+                    <a href="/?logOut=logOut&report=<?=$report_serial?>">יציאה</a>
                 <?php else : ?>
                     <?php $report_serial = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS); ?>
-                    <a href="/?report=<?=$report_serial?>">יציאה</a>
+                    <a href="/?logOut=logOut&report=<?=$report_serial?>">יציאה</a>
                 <?php endif ?>
             </nav>
         </div>
