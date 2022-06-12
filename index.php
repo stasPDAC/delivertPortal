@@ -11,7 +11,7 @@ $logOut = filter_input(INPUT_GET, 'logOut', FILTER_SANITIZE_SPECIAL_CHARS);
 if ($logOut) {
     setcookie('remember_me', '', time() - 60, '/');
     $report_id = filter_input(INPUT_GET, 'report', FILTER_SANITIZE_NUMBER_INT);
-    if ($report_id) {
+    if ($report_id != '') {
         header('location: /?report=' . $report_id);
     } else {
         header('location: /');
