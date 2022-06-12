@@ -27,7 +27,7 @@ if (isset($_COOKIE['remember_me'])) {
     $stmt = null;
     if ($result) {
         $_SESSION['user_id'] = $result['id'];
-        if ($result['i_type'] == 1) {
+        if ($result['i_type'] == 1 || $result['i_type'] == 5) {
             header('location: projects.php');
             exit();
         } elseif ($result['i_type'] == 2) {
@@ -44,9 +44,6 @@ if (isset($_COOKIE['remember_me'])) {
             exit();
         } elseif ($result['i_type'] == 4) {
             header('location: report.php?id=' . $result['i_serial_number']);
-            exit();
-        } elseif ($result['i_type'] == 5) {
-            header('location: projects.php');
             exit();
         }
     }

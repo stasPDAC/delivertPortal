@@ -6,7 +6,7 @@ global $icons;
 global $user_type;
 global $user_id;
 $page = 'projects';
-if($user_type == 1){
+if($user_type == 1 || $user_type == 5){
     $projects = getAllProjects();
 }elseif($user_type == 2){
     $projects = getAllProjectsByManagerId($user_id);
@@ -42,29 +42,6 @@ include_once 'includes/header.php';
         <?php endif ?>
     </div>
     <div class="line"></div>
-<!--    <style>-->
-<!--        .box {-->
-<!--            width: 400px;-->
-<!--            height: 250px;-->
-<!--            border: 2px solid darkblue;-->
-<!--            background-color: blue;-->
-<!--            color: white;-->
-<!--            font: 16px "Zilla", "Open Sans", "Helvetica", "Arial", sans-serif;-->
-<!--        }-->
-<!---->
-<!--    </style>-->
-<!--    <div class="box">-->
-<!--        <p>-->
-<!--            Move the mouse around in this box to watch its coordinates change.-->
-<!--        </p>-->
-<!--        <p>-->
-<!--            <code>pageX</code>: <span id="x">n/a</span>-->
-<!--        </p>-->
-<!--        <p>-->
-<!--            <code>pageY</code>: <span id="y">n/a</span>-->
-<!--        </p>-->
-<!--    </div>-->
-
     <table id="projects_table" class="table table-striped">
         <thead>
         <tr>
@@ -144,7 +121,6 @@ include_once 'includes/header.php';
                              $count_faults = count($faults_for_report);
 
                             if($user_type < 3 && $count_faults != 0){
-//                                echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span><a href="pdf_faultReport.php?id=' . $project['project_id'] . '&u=' . $contractor['i_contractor_id'] . '" target="_blank" title="דוח תקלות לקבלן">' . $icons['upload_pdf'] . '</a></p>';
                                 echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span><a href="contractor.php?id=' . $project['project_id'] . '&u=' . $contractor['i_contractor_id'] . '" title="דוח תקלות לקבלן">' . $icons['note'] . '</a></p>';
                             }else{
                                 echo '<p>' . $contractor['st_contractor_type'] . ': <span class="bold">' . $contractor['st_user_name'] . '</span></p>';

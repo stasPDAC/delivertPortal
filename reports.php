@@ -21,7 +21,9 @@ if($user_type == 2){
     if($project_id){
         $reports = getAllReportsByProjectId($project_id);
     }else{
-        $reports = getAllReports();
+//        $reports = getAllReports();
+        header('location: projects.php');
+        exit();
     }
 }
 $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
